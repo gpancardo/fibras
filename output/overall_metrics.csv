@@ -1,0 +1,5 @@
+Model,n_obs,n_breaches,breach_rate,expected_rate,ci_lower,ci_upper,kupiec_stat,kupiec_pval,christo_stat,christo_pval
+GARCH-Normal,58.0,6.0,0.1034,0.05,0.0345,0.1897,2.7024,0.1002,0.239,0.625
+GARCH-t,58.0,3.0,0.0517,0.05,0.0,0.1207,0.0036,0.9522,2.5794,0.1083
+XGBoost-Pure,58.0,7.0,0.1207,0.05,0.0517,0.2069,4.4497,0.0349,0.0311,0.8601
+XGBoost-Ensemble,58.0,7.0,0.1207,0.05,0.0517,0.2069,4.4497,0.0349,0.0311,0.8601
