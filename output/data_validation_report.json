@@ -1,0 +1,112 @@
+{
+  "pipeline": "FIBRA VaR Backtesting",
+  "timestamp": "2026-05-24T02:17:01.734598",
+  "ticker": "FIBRATC14.MX",
+  "sections": [
+    {
+      "ticker": "FIBRATC14.MX",
+      "checks": [
+        {
+          "check": "missing_log_return",
+          "n_missing": 0,
+          "n_total": 1422,
+          "pct_missing": 0.0,
+          "status": "PASS"
+        },
+        {
+          "check": "missing_price",
+          "n_missing": 0,
+          "n_total": 1422,
+          "pct_missing": 0.0,
+          "status": "PASS"
+        },
+        {
+          "check": "missing_volume",
+          "n_missing": 0,
+          "n_total": 1422,
+          "pct_missing": 0.0,
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "ticker": "FIBRATC14.MX",
+      "checks": [
+        {
+          "check": "non_trading_days",
+          "total_obs": 1422,
+          "n_weekend_gaps": 427,
+          "n_long_gaps": 110,
+          "long_gap_dates": [
+            "2018-01-15",
+            "2018-01-30",
+            "2018-02-23",
+            "2018-03-12",
+            "2018-03-23"
+          ],
+          "status": "WARN"
+        }
+      ]
+    },
+    {
+      "ticker": "FIBRATC14.MX",
+      "checks": [
+        {
+          "check": "return_consistency",
+          "max_abs_diff": 0.0,
+          "mean_abs_diff": 0.0,
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "ticker": "FIBRATC14.MX",
+      "checks": [
+        {
+          "check": "outliers",
+          "threshold_sigma": 5.0,
+          "mean_return": 0.000558,
+          "std_return": 0.019798,
+          "n_extreme": 9,
+          "pct_extreme": 0.633,
+          "extreme_dates": [
+            "2020-03-12",
+            "2020-03-20",
+            "2020-06-16",
+            "2025-01-31",
+            "2025-02-04",
+            "2025-07-16",
+            "2025-10-24",
+            "2026-02-16",
+            "2026-03-26"
+          ],
+          "extreme_values": [
+            -7.331067,
+            -12.095646,
+            5.656016,
+            -5.13412,
+            6.175015,
+            -5.502678,
+            -8.156611,
+            5.449759,
+            -5.796292
+          ],
+          "status": "WARN"
+        }
+      ]
+    },
+    {
+      "ticker": "Alignment",
+      "checks": [
+        {
+          "check": "fibra_fx_alignment",
+          "n_fibra": 1422,
+          "n_fx": 2169,
+          "n_overlap": 1421,
+          "pct_overlap": 99.9,
+          "status": "PASS"
+        }
+      ]
+    }
+  ]
+}

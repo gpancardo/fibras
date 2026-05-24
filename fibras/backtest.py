@@ -1,12 +1,14 @@
 """
 Value-at-Risk computation and backtesting framework.
-Includes Kupiec POF test, Christoffersen independence test, and exact binomial confidence intervals.
+Includes Kupiec POF test, Christoffersen independence test, exact binomial
+confidence intervals, rolling stability analysis, conservatism metrics,
+and pooled cross-asset evaluation.
 """
 
 import pandas as pd
 import numpy as np
 from scipy.stats import norm, t as t_dist, chi2, binom
-from typing import Literal, Dict, Optional
+from typing import Literal, Dict, Optional, Union
 
 DistType = Literal["normal", "t"]
 
@@ -81,6 +83,63 @@ def expected_shortfall_from_volatility(
 
     es = volatility_forecast * es_factor
     return es
+
+
+def expected_shortfall_realized(
+    returns: pd.Series,
+    var_forecast: pd.Series,
+) -> Optional[float]:
+    """
+    ES realizado (ex-post): media de los retornos que violan el VaR.
+
+    Esta es una medida realizada, no predictiva: calcula la pérdida promedio
+    condicional en los días donde el retorno fue peor que el VaR pronosticado.
+
+    Args:
+        returns: Log returns (negativos en pérdidas).
+        var_forecast: VaR forecast (positive loss magnitude).
+
+    Returns:
+        ES as positive magnitude (mean of -returns on breach days), or NaN if no breaches.
+    """
+    common_idx = returns.index.intersection(var_forecast.index)
+    r = returns.loc[common_idx]
+    v = var_forecast.loc[common_idx]
+
+    breach_mask = r < -v
+    if breach_mask.sum() == 0:
+        return float('nan')
+
+    breach_losses = -r[breach_mask]
+    return float(breach_losses.mean())
+
+
+def compute_historical_var_series(
+    returns: pd.Series,
+    window: int,
+    alpha: float,
+    aligned_index: pd.DatetimeIndex,
+) -> pd.Series:
+    """
+    Compute rolling historical VaR as empirical quantile of past returns.
+
+    For each date in aligned_index, VaR is the α-quantile of returns
+    in the `window` trading days immediately before that date.
+    No model estimation required.
+
+    Args:
+        returns: Full series of log returns.
+        window: Rolling window size (e.g., 125).
+        alpha: VaR significance level (e.g., 0.05 for 95% VaR).
+        aligned_index: Dates for which to compute VaR.
+
+    Returns:
+        Series of VaR estimates (positive loss magnitudes), indexed by aligned_index.
+    """
+    # OPTIMIZATION: vectorized pandas rolling quantile instead of Python loop
+    rolling_quant = returns.rolling(window).quantile(alpha).shift(1)
+    var_series = -rolling_quant.reindex(aligned_index)
+    return var_series
 
 
 def backtest_series(
@@ -212,6 +271,168 @@ def binomial_confidence_interval(
     return {'lower': lower, 'upper': upper}
 
 
+def exact_binomial_pvalue(
+    breaches: pd.Series,
+    alpha: float = 0.05
+) -> float:
+    """
+    Exact binomial (two-sided) p-value for the null H0: p = alpha.
+
+    Uses the Clopper-Pearson principle: sum of binomial probabilities for
+    all outcomes at least as extreme as the observed count.
+    """
+    n = len(breaches)
+    x = int(breaches.sum())
+
+    if n == 0:
+        return float('nan')
+
+    p_vals = binom.pmf(np.arange(0, n + 1), n, alpha)
+    observed_pmf = binom.pmf(x, n, alpha)
+
+    p_value = p_vals[p_vals <= observed_pmf].sum()
+    return float(min(p_value, 1.0))
+
+
+def binomial_ci_proper(
+    breaches: pd.Series,
+    alpha: float = 0.05,
+    conf_level: float = 0.95
+) -> Dict[str, float]:
+    """
+    Exact Clopper-Pearson confidence interval for the binomial proportion
+    using the beta distribution relationship.
+
+    Args:
+        breaches: Binary series of breach indicators.
+        alpha: Expected breach rate (for reference, not used).
+        conf_level: Confidence level for interval.
+
+    Returns:
+        Dictionary with 'lower' and 'upper' bounds.
+    """
+    from scipy.stats import beta as beta_dist
+
+    n = len(breaches)
+    x = int(breaches.sum())
+
+    if n == 0:
+        return {'lower': float('nan'), 'upper': float('nan')}
+
+    tail_prob = (1.0 - conf_level) / 2.0
+
+    if x == 0:
+        lower = 0.0
+        upper = 1.0 - tail_prob ** (1.0 / n)
+    elif x == n:
+        lower = tail_prob ** (1.0 / n)
+        upper = 1.0
+    else:
+        lower = beta_dist.ppf(tail_prob, x, n - x + 1)
+        upper = beta_dist.ppf(1.0 - tail_prob, x + 1, n - x)
+
+    return {'lower': float(lower), 'upper': float(upper)}
+
+
+def expected_breach_distribution(
+    n: int,
+    alpha: float = 0.05
+) -> Dict[str, float]:
+    """Expected count, variance, and standard deviation of breach events under H0."""
+    expected_count = n * alpha
+    variance = n * alpha * (1.0 - alpha)
+    std_dev = np.sqrt(variance)
+    return {
+        'expected_count': expected_count,
+        'variance': variance,
+        'std_dev': std_dev,
+        'cv': std_dev / expected_count if expected_count > 0 else float('inf')
+    }
+
+
+def conservatism_metric(
+    breach_rate: float,
+    alpha: float = 0.05
+) -> float:
+    """
+    Conservatism metric: C = p̂ - α
+
+    Negative C → conservative (fewer breaches than expected).
+    Positive C → anti-conservative (more breaches than expected).
+    """
+    return breach_rate - alpha
+
+
+def rolling_breach_rate(
+    returns: pd.Series,
+    var_forecast: pd.Series,
+    window: int = 30
+) -> pd.DataFrame:
+    """
+    Compute rolling breach rate over a backward-looking window.
+
+    Returns DataFrame with rolling breach rate, count, total, and VaR mean.
+    """
+    common_idx = returns.index.intersection(var_forecast.index)
+    r = returns.loc[common_idx]
+    v = var_forecast.loc[common_idx]
+
+    breach = (r < -v).astype(int)
+    rolling_rate = breach.rolling(window).mean()
+    rolling_count = breach.rolling(window).sum()
+    rolling_var_mean = v.rolling(window).mean()
+
+    out = pd.DataFrame({
+        'return': r,
+        'var': v,
+        'breach': breach,
+        'rolling_breach_rate': rolling_rate,
+        'rolling_breach_count': rolling_count,
+        'rolling_var_mean': rolling_var_mean,
+    }, index=common_idx)
+    return out
+
+
+def pooled_breach_rate(
+    models_data: list,
+    alpha: float = 0.05
+) -> Dict:
+    """
+    Compute pooled breach rate across multiple assets or models.
+
+    Args:
+        models_data: List of dicts with 'n_obs', 'n_breaches', 'name'.
+        alpha: Expected breach rate.
+
+    Returns:
+        Dict with pooled statistics.
+    """
+    total_obs = sum(d['n_obs'] for d in models_data)
+    total_breaches = sum(d['n_breaches'] for d in models_data)
+    p_pool = total_breaches / total_obs if total_obs > 0 else float('nan')
+
+    from scipy.stats import binomtest
+    try:
+        bt = binomtest(total_breaches, total_obs, p=alpha, alternative='two-sided')
+        exact_p = bt.pvalue
+    except Exception:
+        exact_p = float('nan')
+
+    exp_dist = expected_breach_distribution(total_obs, alpha)
+    c = conservatism_metric(p_pool, alpha)
+
+    return {
+        'pooled_n_obs': total_obs,
+        'pooled_n_breaches': total_breaches,
+        'pooled_breach_rate': p_pool,
+        'expected_rate': alpha,
+        'conservatism_c': c,
+        'exact_binomial_pvalue': exact_p,
+        'expected_count': exp_dist['expected_count'],
+        'expected_std_dev': exp_dist['std_dev'],
+    }
+
+
 def evaluate_model(
     returns: pd.Series,
     var_forecast: pd.Series,
@@ -233,7 +454,12 @@ def evaluate_model(
 
     kupiec = kupiec_pof(breaches, alpha)
     christo = christoffersen_independence(breaches)
+    ci_proper = binomial_ci_proper(breaches, alpha)
     ci = binomial_confidence_interval(breaches, alpha)
+    exact_p = exact_binomial_pvalue(breaches, alpha)
+    exp_dist = expected_breach_distribution(len(bt_df), alpha)
+    c_value = conservatism_metric(breaches.mean(), alpha)
+    es = expected_shortfall_realized(returns, var_forecast)
 
     return {
         'n_obs': len(bt_df),
@@ -242,10 +468,17 @@ def evaluate_model(
         'expected_rate': alpha,
         'ci_lower': ci['lower'],
         'ci_upper': ci['upper'],
+        'ci_lower_cp': ci_proper['lower'],
+        'ci_upper_cp': ci_proper['upper'],
         'kupiec_stat': kupiec['statistic'],
         'kupiec_pval': kupiec['p_value'],
         'christo_stat': christo['statistic'],
-        'christo_pval': christo['p_value']
+        'christo_pval': christo['p_value'],
+        'exact_binomial_pval': exact_p,
+        'expected_n_breaches': exp_dist['expected_count'],
+        'expected_std_dev': exp_dist['std_dev'],
+        'conservatism_c': c_value,
+        'es_realized': es
     }
 
 

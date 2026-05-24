@@ -63,6 +63,13 @@ def create_features(
     if 'garch_t_forecast' in df.columns:
         df['garch_t_ratio'] = df['garch_t_forecast'] / df['hist_vol_20']
 
+    # Drop metadata columns that may carry legitimate NaN (regime, etc.)
+    # before NaN removal so they don't shrink the sample needlessly
+    drop_cols = ['regime', 'fx_return_raw']
+    for c in drop_cols:
+        if c in df.columns:
+            df = df.drop(columns=c)
+
     # Eliminar filas con NaN en features o target
     df = df.dropna()
 

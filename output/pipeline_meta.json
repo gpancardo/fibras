@@ -1,0 +1,14 @@
+{
+  "pipeline": "FIBRA VaR Refinement Pipeline",
+  "timestamp": "2026-05-24T02:17:01.696063",
+  "git_commit": "d2eae13",
+  "global_seed": 42,
+  "config": {
+    "alpha": 0.05,
+    "window": 125,
+    "refit_freq": 20,
+    "regime_vol_window": 20,
+    "regime_lookback": 500,
+    "regime_percentile": 90.0
+  }
+}

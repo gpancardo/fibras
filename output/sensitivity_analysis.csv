@@ -1,0 +1,4 @@
+window,refit_freq,n_obs,breach_rate,conservatism_c,kupiec_pval
+100,20,67,0.0448,-0.0052,0.8418
+150,20,64,0.0156,-0.0344,0.1424
+125,10,130,0.0308,-0.0192,0.2802

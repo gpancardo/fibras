@@ -1,7 +1,7 @@
-5aca34825db1a55af6aa3dcae3eec10a  fibra_index.csv
-3acbcf88e922ba3d60562a700c3192fc  usdmxn.csv
-9d7a7c61741e1ff14cb56e5ebce258cb  FIBRATC14_MX.csv
-fa27ad1082673f9a1dd1250356f938bf  FUNO11_MX.csv
-eed2f51de9c80804696b6faadb0bf2b2  FIBRAPL14_MX.csv
-ff75ffcf0369cdc61e57c5bff8f31bb8  ^MXX.csv
-1afca7c8e49cadbbb98d2b9621cfbdd9  EWW.csv
+acdbb5683fed18c1df37fd4cb3ea56af  data/raw/EWW.csv
+a3d44a7a9944256ca6318f19fb52ffa3  data/raw/FIBRAPL14_MX.csv
+fdf140eb6200e2e10b12efe10a48c4f9  data/raw/FIBRATC14_MX.csv
+573823c1ea49f21b72a501090ef2a13f  data/raw/FUNO11_MX.csv
+fe1661264e99a9428ec7df4227a675ff  data/raw/^MXX.csv
+d5db318ec97c2e4c459c89bfdacb675c  data/raw/fibra_index.csv
+2e13870ebc773bbef09f55a2d498681f  data/raw/usdmxn.csv

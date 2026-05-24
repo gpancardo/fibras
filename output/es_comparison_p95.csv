@@ -1,0 +1,8 @@
+Model,ES_realized
+GARCH-Normal,0.045783
+GARCH-t,0.060292
+XGBoost-Pure,0.045783
+XGBoost-Ensemble,0.03812
+XGBoost-Quantile-Pure,0.032293
+XGBoost-Quantile-GARCHX,0.037087
+Historical-VaR,0.060292
