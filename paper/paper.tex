@@ -29,7 +29,7 @@
 % --- Figure and Table Legends ---
 \section*{Figure and Table Legends}
 
-\textbf{Figure 1.} Power curves of the Kupiec POF test for $n = 62$, $n = 95$, and $n = 250$, computed exactly from the binomial distribution.
+\textbf{Figure 1.} Power curves of the Kupiec POF test for $n = 62$, $n = 95$, and $n = 250$, computed exactly from the binomial distribution. These assume independent breaches; under breach clustering, effective sample sizes are smaller and power is lower.
 
 \textbf{Figure 2.} Distribution of Kupiec $p$-values under $H_0: p = 0.05$ for $n = 62$ and $n = 95$, based on 5,000 binomial draws; the empirical rejection rate is shown in each panel.
 
@@ -101,7 +101,7 @@ VaR backtesting has been studied extensively for large samples. \citet{kupiec199
 
 The finite-sample properties of these tests are documented in simulation studies \citep{campbell2007review}, but the interaction with ex-ante regime definitions---which impose an additional sample-size constraint---has received little attention. This paper fills that gap in the context of Mexican FIBRAs, a short-history emerging-market asset class.
 
-Machine learning methods in financial econometrics have proliferated \citep{gu2020empirical}, but their performance in small-sample VaR settings is not well characterized. \citet{zhou2012extreme} and \citet{cotter2006multivariate} document extreme risk dynamics in REIT markets, providing a foundation for the empirical application.
+Machine learning methods have proliferated in asset pricing and financial econometrics \citep{gu2020empirical}, but their performance in small-sample VaR settings is not well characterized. \citet{zhou2012extreme} and \citet{cotter2006multivariate} document extreme risk dynamics in REIT markets, providing a foundation for the empirical application.
 
 \subsection{Small-Sample Model Validation}
 
@@ -186,7 +186,7 @@ For model $m$, the breach indicator at date $t$ is $I_t^{(m)}(\alpha) = \mathbf{
     \item \textbf{Kupiec POF test \cite{kupiec1995techniques}.} Included for comparability with the existing literature, but its asymptotic $\chi^2_1$ null distribution is unreliable at $n < 100$. We report it as secondary context, not primary evidence.
 \end{enumerate}
 
-The Christoffersen independence test is computed but has negligible power at these sample sizes and is not emphasised.
+The Christoffersen independence test is computed but has severely limited ability to detect dependence at these sample sizes and is not emphasised.
 
 \subsection{Power Analysis (Exact)}
 
@@ -237,7 +237,7 @@ Figure~\ref{fig:power} displays the full power curves. Figure~\ref{fig:size} sho
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.95\textwidth]{../output/figures/power_curve_small_sample.pdf}
-\caption{Power curves of the Kupiec POF test for $n = 62$, $n = 95$, and $n = 250$, computed exactly from the binomial distribution.}
+\caption{Power curves of the Kupiec POF test for $n = 62$, $n = 95$, and $n = 250$, computed exactly from the binomial distribution. These assume independent breaches; under breach clustering, effective sample sizes are smaller and power is lower.}
 \label{fig:power}
 \end{figure}
 
@@ -316,7 +316,7 @@ Pooled       & 443 & 0.036 & $-$0.014 & 0.097 & +0.047 \\
 \end{tabular}
 \end{table}
 
-The directional pattern is consistent across all five equity tickers: GARCH-$t$ breach rates are at or below the nominal 5\% in every case (2.1\%--4.8\%), while XGBoost-Pure breach rates range from 7.3\% to 13.7\%. The pooled breach rate across all tickers is 3.6\% for GARCH-$t$ ($C = -0.014$, conservative) and 9.7\% for XGBoost-Pure ($C = +0.047$, anti-conservative). The pooled exact binomial $p$-value for GARCH-$t$ is 0.23, providing insufficient evidence to reject correct coverage. For XGBoost-Pure, the pooled exact binomial $p$-value is $< 10^{-4}$, indicating a statistically clear deviation from the nominal rate. With 443 pooled observations, the binomial test is considerably more informative than any single-ticker test.
+The directional pattern is consistent across all five equity tickers: GARCH-$t$ breach rates are at or below the nominal 5\% in every case (2.1\%--4.8\%), while XGBoost-Pure breach rates range from 7.3\% to 13.7\%. The pooled breach rate across all tickers is 3.6\% for GARCH-$t$ ($C = -0.014$, conservative) and 9.7\% for XGBoost-Pure ($C = +0.047$, anti-conservative). Under the independence assumption, the pooled exact binomial $p$-value for GARCH-$t$ is 0.23, providing insufficient evidence to reject correct coverage. For XGBoost-Pure, the pooled exact binomial $p$-value is $< 10^{-4}$, indicating a systematic deviation from the nominal rate. Given the cross-sectional correlation among tickers (the ETF contains its constituents), the effective sample size is smaller than 443, so these $p$-values understate uncertainty. The more reliable signal is the sign consistency: GARCH-$t$ breach rates are at or below 5\% on all five tickers; XGBoost-Pure breach rates exceed 5\% on all five.
 
 Figure~\ref{fig:conservatism} visualises the conservatism metric across all six models on the main ticker. Figure~\ref{fig:rolling} shows the 30-day rolling breach rate for the six models, illustrating the instability inherent in short evaluation windows.
 
@@ -395,9 +395,9 @@ Figure~\ref{fig:framework} summarises this decision protocol as a flowchart.
 
 \subsection{Limitations}
 
-The numerical results depend on the specific configuration chosen here: a 125-day rolling estimation window, 20-day refit frequency, and a regime definition based on a 20-day volatility window with a 500-day lookback at the 90\textsuperscript{th} percentile. Changing any of these parameters would shift the aligned sample size and potentially the breach-rate ranking. That said, the structural problem---that ex-ante regime definitions consume data and that standard backtests lose discriminatory power below 100 observations---is independent of the specific parameterization. A Monte Carlo experiment using a GARCH(1,1)-$t$ data-generating process and 200 independent replications confirms that the Kupiec test rejects the true model 29.5\% of the time at $n = 58$ (nominal 5\%) and that no model achieves a Kupiec rejection rate above 35\% at that sample size, establishing a ceiling on what backtests can achieve with short evaluation windows.
+The numerical results depend on the specific configuration chosen here: a 125-day rolling estimation window, 20-day refit frequency, and a regime definition based on a 20-day volatility window with a 500-day lookback at the 90\textsuperscript{th} percentile. Changing any of these parameters would shift the aligned sample size and potentially the breach-rate ranking. That said, the structural problem---that ex-ante regime definitions consume data and that standard backtests lose discriminatory power below 100 observations---is independent of the specific parameterization. A Monte Carlo experiment using a GARCH(1,1)-$t$ data-generating process and 200 independent replications confirms that the Kupiec test rejects the true model 29.5\% of the time at $n = 58$ (nominal 5\%) and that no model achieves a Kupiec rejection rate exceeding 35\% at that sample size (XGBoost-Q: 35.0\%), establishing a ceiling on what backtests can achieve with short evaluation windows.
 
-The XGBoost-$t$ variant uses a fixed $\nu = 5$ rather than estimating the degrees of freedom per refit window. Estimating $\nu$ from the data would be more consistent with the GARCH-$t$ specification but would also introduce additional parameter uncertainty in an already constrained setting. The pooled binomial test treats observations as independent despite the cross-sectional correlation among Mexican equity tickers; the reported pooled $p$-values are therefore indicative of direction and magnitude rather than exact. Future work with cluster-robust inference or panel methods would strengthen the pooled analysis. Finally, the model comparison here uses a single VaR level (95\%) and does not assess Expected Shortfall performance; extending the framework to 99\% VaR and ES would be a natural next step, though at $n = 62$ the expected number of 99\% breaches is only 0.62, making any backtest essentially uninformative at that level.
+The XGBoost-$t$ variant uses a fixed $\nu = 5$ rather than estimating the degrees of freedom per refit window. Estimating $\nu$ from the data would be more consistent with the GARCH-$t$ specification but would also introduce additional parameter uncertainty in an already constrained setting. The pooled binomial test treats observations as independent despite the cross-sectional correlation among Mexican equity tickers; the reported pooled $p$-values are therefore indicative of direction and magnitude rather than exact. Future work with cluster-robust inference or panel methods would strengthen the pooled analysis. Finally, the model comparison here uses a single VaR level (95\%) and does not assess Expected Shortfall performance; extending the framework to 99\% VaR and ES would be a natural next step, though at $n = 62$ the expected number of 99\% breaches is only 0.62, making any backtest essentially uninformative at that level. The decision framework proposed in Section~6.4 has not been validated on out-of-sample data or compared against alternative small-sample validation protocols; its recommendations reflect the diagnostic properties documented here, but its operational performance remains to be evaluated.
 
 \subsection{Relation to Basel Traffic-Light Approaches}
 
@@ -405,7 +405,7 @@ Basel traffic-light frameworks \cite{bcbs2019minimum} assume sufficient observat
 
 \subsection{Practical Implications for Model Governance}
 
-The findings have direct implications for model risk management frameworks such as SR~11-7 \cite{frb2011sr117}. Validation teams operating with short histories, new products, or regime-conditioned samples should recognize that standard coverage tests may fail to discriminate between acceptable and materially deficient models. Supplemental diagnostics become necessary.
+The findings suggest that model validation teams---operating under frameworks such as SR~11-7 \cite{frb2011sr117} with short histories, new products, or regime-conditioned samples---should supplement standard coverage tests with the diagnostics proposed here, since standard tests may fail to discriminate between acceptable and materially deficient models when sample sizes are small.
 
 \section{Conclusion}
 % ============================================================
