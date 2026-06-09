@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.8.3)  24 MAY 2026 17:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.8.3)  9 JUN 2026 01:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -544,13 +544,13 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 32.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 54.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 58.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 54.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 58.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 54.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 58.
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 6
-3.
+7.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
@@ -559,111 +559,114 @@ File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-di
 st/fonts/enc/dvips/base/8r.enc}] [2]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 71.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 75.
 
 
 LaTeX Warning: No \author given.
 
-[3]
-Overfull \hbox (1.00809pt too wide) in paragraph at lines 128--129
+[3] [4]
+Overfull \hbox (1.00809pt too wide) in paragraph at lines 156--157
 \T1/ptm/m/n/12 ma-tion win-dow, the aligned eval-u-a-tion pe-riod con-tains $\O
 ML/ztmcm/m/it/12 n \OT1/ztmcm/m/n/12 = 62$ \T1/ptm/m/n/12 ob-ser-va-tions for F
 I-BRATC14.MX
  []
 
-[4] [5] [6]
-<../output/figures/power_curve_small_sample.pdf, id=148, 640.75383pt x 387.5623
+[5] [6] [7]
+<../output/figures/power_curve_small_sample.pdf, id=210, 640.75383pt x 387.5623
 pt>
 File: ../output/figures/power_curve_small_sample.pdf Graphic file (type pdf)
 <use ../output/figures/power_curve_small_sample.pdf>
 Package pdftex.def Info: ../output/figures/power_curve_small_sample.pdf  used o
-n input line 204.
+n input line 239.
 (pdftex.def)             Requested size: 432.48051pt x 261.58736pt.
-<../output/figures/size_distortion.pdf, id=149, 712.93256pt x 585.66742pt>
+<../output/figures/size_distortion.pdf, id=211, 785.20255pt x 658.66016pt>
 File: ../output/figures/size_distortion.pdf Graphic file (type pdf)
 <use ../output/figures/size_distortion.pdf>
 Package pdftex.def Info: ../output/figures/size_distortion.pdf  used on input l
-ine 211.
-(pdftex.def)             Requested size: 432.48051pt x 355.29056pt.
- [7 <../output/figures/power_curve_small_sample.pdf>]
+ine 246.
+(pdftex.def)             Requested size: 432.48051pt x 362.78682pt.
+ [8 <../output/figures/power_curve_small_sample.pdf>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 222.
+(hyperref)                removing `math shift' on input line 257.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 222.
+(hyperref)                removing `math shift' on input line 257.
 
-[8 <../output/figures/size_distortion.pdf>]
-<../output/figures/pvalue_staircase.pdf, id=276, 640.11963pt x 350.58919pt>
+[9 <../output/figures/size_distortion.pdf>]
+<../output/figures/pvalue_staircase.pdf, id=337, 640.54118pt x 350.58919pt>
 File: ../output/figures/pvalue_staircase.pdf Graphic file (type pdf)
 <use ../output/figures/pvalue_staircase.pdf>
 Package pdftex.def Info: ../output/figures/pvalue_staircase.pdf  used on input 
-line 251.
-(pdftex.def)             Requested size: 432.48051pt x 236.87286pt.
- [9] [10 <../output/figures/pvalue_staircase.pdf>]
-<../output/figures/conservatism_bars.pdf, id=368, 551.60663pt x 279.35556pt>
+line 287.
+(pdftex.def)             Requested size: 432.48051pt x 236.71237pt.
+ [10] [11 <../output/figures/pvalue_staircase.pdf>]
+<../output/figures/conservatism_bars.pdf, id=442, 551.60663pt x 279.35556pt>
 File: ../output/figures/conservatism_bars.pdf Graphic file (type pdf)
 <use ../output/figures/conservatism_bars.pdf>
 Package pdftex.def Info: ../output/figures/conservatism_bars.pdf  used on input
- line 289.
+ line 325.
 (pdftex.def)             Requested size: 386.96027pt x 195.9738pt.
-<../output/figures/rolling_breach_rates.pdf, id=369, 710.98503pt x 279.5582pt>
+<../output/figures/rolling_breach_rates.pdf, id=443, 710.98503pt x 279.5582pt>
 File: ../output/figures/rolling_breach_rates.pdf Graphic file (type pdf)
 <use ../output/figures/rolling_breach_rates.pdf>
 Package pdftex.def Info: ../output/figures/rolling_breach_rates.pdf  used on in
-put line 296.
+put line 332.
 (pdftex.def)             Requested size: 432.48051pt x 170.05249pt.
- [11 <../output/figures/conservatism_bars.pdf>]
+ [12 <../output/figures/conservatism_bars.pdf>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 311.
+(hyperref)                removing `math shift' on input line 346.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 311.
+(hyperref)                removing `math shift' on input line 346.
 
-[12 <../output/figures/rolling_breach_rates.pdf>]
-Overfull \hbox (3.69124pt too wide) in paragraph at lines 336--337
-\T1/ptm/m/n/12 Portions of this manuscript were drafted with the as-sis-tance o
-f a large lan-guage model (DeepSeek
- []
-
-[13]
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 3
-39.
- (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
-File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
-) (./paper.bbl)
-[14] (./paper.aux)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 350.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 350.
+[13 <../output/figures/rolling_breach_rates.pdf>] [14]
+<../output/figures/decision_framework.pdf, id=580, 570.93298pt x 717.02786pt>
+File: ../output/figures/decision_framework.pdf Graphic file (type pdf)
+<use ../output/figures/decision_framework.pdf>
+Package pdftex.def Info: ../output/figures/decision_framework.pdf  used on inpu
+t line 389.
+(pdftex.def)             Requested size: 386.96027pt x 485.997pt.
+ [15] [16 <../output/figures/decision_framework.pdf>] [17] (./paper.bbl [18]) [
+19] (./paper.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: 77F04CC81F7DA8AAA54B2E3B00CCD41A;2703.
+(rerunfilecheck)             Checksum: 34376FE7E733188BDFD332DD9679CCB1;4337.
  ) 
 Here is how much of TeX's memory you used:
- 13024 strings out of 476139
- 202177 string characters out of 5794455
+ 13079 strings out of 476139
+ 202888 string characters out of 5794455
  1936975 words of memory out of 5000000
- 34748 multiletter control sequences out of 15000+600000
- 630506 words of font info for 151 fonts, out of 8000000 for 9000
+ 34775 multiletter control sequences out of 15000+600000
+ 641873 words of font info for 170 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 75i,13n,79p,1065b,529s stack positions out of 10000i,1000n,20000p,200000b,200000s
- </home/german/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.60
-0pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/
-utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (14 pages, 224132 bytes).
+ 75i,13n,79p,1094b,561s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist
+, replaced by a fixed one
+
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type
+1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb
+8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on paper.pdf (19 pages, 259887 bytes).
 PDF statistics:
- 590 PDF objects out of 1000 (max. 8388607)
- 269 compressed objects within 3 object streams
- 68 named destinations out of 1000 (max. 500000)
- 162 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 763 PDF objects out of 1000 (max. 8388607)
+ 379 compressed objects within 4 object streams
+ 98 named destinations out of 1000 (max. 500000)
+ 231 words of extra memory for PDF output out of 10000 (max. 10000000)
 

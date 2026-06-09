@@ -8,7 +8,7 @@ Key upgrades from baseline:
   - Conservatism metric C = p̂ - α as main decision variable
   - Rolling stability analysis
   - Cross-asset pooled breach rate
-  - Power curves for n=58 and n=71
+  - Power curves for n=62 and n=95
   - Size distortion visualization
   - Sensitivity analysis (varying window/refit)
 
@@ -259,6 +259,7 @@ models_var_cols = {
     'GARCH-Normal': 'var_garch_normal',
     'GARCH-t': 'var_garch_t',
     'XGBoost-Pure': 'var_xgb_pure',
+    'XGBoost-t': 'var_xgb_pure_t',
     'XGBoost-Ensemble': 'var_xgb_ensemble',
     'Historical-VaR': 'var_hist',
 }
@@ -296,6 +297,7 @@ models = {
     'GARCH-Normal': 'var_garch_normal',
     'GARCH-t': 'var_garch_t',
     'XGBoost-Pure': 'var_xgb_pure',
+    'XGBoost-t': 'var_xgb_pure_t',
     'XGBoost-Ensemble': 'var_xgb_ensemble',
     'Historical-VaR': 'var_hist',
 }
@@ -580,12 +582,12 @@ from fibras.visualization import (
 
 fig_dir = f"{OUTPUT_DIR}/figures"
 
-print("\nGenerating power curves (n=58, 71, 250)...")
-plot_power_curve_small_sample(n_values=[58, 71, 250], alpha=ALPHA, output_dir=fig_dir)
+print("\\nGenerating power curves (n=62, 95, 250)...")
+plot_power_curve_small_sample(n_values=[62, 95, 250], alpha=ALPHA, output_dir=fig_dir)
 print(f"  -> {fig_dir}/power_curve_small_sample.pdf")
 
-print("\nGenerating size distortion histograms...")
-plot_size_distribution(n_values=[58, 71, 250], alpha=ALPHA, n_sim=5000, output_dir=fig_dir)
+print("\\nGenerating size distortion histograms...")
+plot_size_distribution(n_values=[62, 95, 250], alpha=ALPHA, n_sim=5000, output_dir=fig_dir)
 print(f"  -> {fig_dir}/size_distortion.pdf")
 
 print("\nGenerating rolling breach rate plot...")
@@ -679,9 +681,9 @@ for name, row in overall_df.iterrows():
     rate = row.get('breach_rate', float('nan'))
     print(f"  {name}: rate={rate:.4f} | C={c_val:+.4f} | exact p={exact_p:.4f}")
 
-print(f"\n  POWER ANALYSIS:")
-print(f"    - At n=58, Kupiec rejects correct model ~29% of the time (nominal 5%)")
-print(f"    - At n=71, power to detect 10% true rate (vs 5% nominal) is ~35%")
+print(f"\\n  POWER ANALYSIS:")
+print(f"    - At n=62, Kupiec rejects correct model ~7.6% of the time (nominal 5%)")
+print(f"    - At n=62, power to detect 10% true rate (vs 5% nominal) is ~43%")
 print(f"    - Non-significant p-values are NOT evidence of good calibration")
 print(f"    - Standard backtests collapse under these data constraints")
 

@@ -182,24 +182,24 @@ def plot_power_curve_small_sample(
     """
     Power curve figure for small-sample backtesting.
 
-    Shows rejection probability of the Kupiec test for n=58, n=71, and
+    Shows rejection probability of the Kupiec test for n=62, n=95, and
     optionally n=250 as a baseline. Uses the exact binomial test as comparison.
     """
     if n_values is None:
-        n_values = [58, 71, 250]
+        n_values = [62, 95, 250]
 
     os.makedirs(output_dir, exist_ok=True)
 
     fig, ax = plt.subplots(figsize=(9, 5.5))
 
-    colors = {58: '#2980b9', 71: '#27ae60', 250: '#d35400'}
-    linestyles = {58: '-', 71: '--', 250: '-.'}
+    colors = {62: '#2980b9', 95: '#27ae60', 250: '#d35400'}
+    linestyles = {62: '-', 95: '--', 250: '-.'}
 
     for n_val in n_values:
         df = kupiec_power_curve(n=n_val, alpha=alpha, n_sim=3000)
         color = colors.get(n_val, '#7f8c8d')
         ls = linestyles.get(n_val, '-')
-        lw = 2.0 if n_val <= 71 else 1.5
+        lw = 2.0 if n_val <= 95 else 1.5
 
         ax.plot(df['true_rate'], df['power_kupiec'],
                 color=color, linestyle=ls, linewidth=lw,
@@ -237,12 +237,18 @@ def plot_size_distribution(
     rejection rate at various sample sizes.
     """
     if n_values is None:
-        n_values = [58, 71, 250, 500]
+        n_values = [62, 95, 250, 500]
 
     os.makedirs(output_dir, exist_ok=True)
 
-    fig, axes = plt.subplots(2, 2, figsize=(10, 8))
-    axes = axes.flatten()
+    n_plots = len(n_values)
+    n_cols = min(2, n_plots)
+    n_rows = (n_plots + 1) // 2
+    fig, axes = plt.subplots(n_rows, n_cols, figsize=(5.5 * n_cols, 4.5 * n_rows))
+    if n_plots == 1:
+        axes = [axes]
+    else:
+        axes = axes.flatten()
 
     for ax, n_val in zip(axes, n_values):
         df = size_distribution(n=n_val, alpha=alpha, n_sim=n_sim)

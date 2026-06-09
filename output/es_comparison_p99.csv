@@ -1,8 +1,0 @@
-Model,ES_realized
-GARCH-Normal,0.101086
-GARCH-t,0.101086
-XGBoost-Pure,0.058925
-XGBoost-Ensemble,0.058925
-XGBoost-Quantile-Pure,0.051019
-XGBoost-Quantile-GARCHX,0.101086
-Historical-VaR,0.101086

@@ -2,5 +2,6 @@ model,conservatism_c
 GARCH-Normal,0.062903
 GARCH-t,-0.001613
 XGBoost-Pure,0.062903
+XGBoost-t,0.046774
 XGBoost-Ensemble,0.062903
 Historical-VaR,0.014516

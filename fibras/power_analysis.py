@@ -82,7 +82,7 @@ def kupiec_power_curve(
 
 
 def size_distribution(
-    n: int = 58,
+    n: int = 62,
     alpha: float = 0.05,
     n_sim: int = 10000,
     seed: int = 42
@@ -94,7 +94,7 @@ def size_distribution(
     Deviation from uniformity indicates size distortion.
 
     Args:
-        n: Sample size (e.g., 58, 71).
+        n: Sample size (e.g., 62, 95).
         alpha: Nominal breach rate.
         n_sim: Number of simulation draws.
         seed: Random seed.

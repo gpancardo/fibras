@@ -1,9 +1,8 @@
 """
 Standalone figure-generation script for the FIBRA VaR paper.
-Produces fig1_volatility_regimes.png, fig2_var_violations.png, and fig3_power_curve.png.
-Uses the exact same parameters as the modeling pipeline (20-day vol window, 90th pctile,
-500-day rolling lookback). Reads precomputed data from data/raw/ and output/; does not
-re-run the modeling pipeline.
+Produces fig1, fig2, and fig3 in BOTH .png and .pdf formats.
+Optimized for accessibility (color-blind friendly) and high-contrast B&W print.
+Uses the exact same parameters as the modeling pipeline.
 """
 
 import os
@@ -25,20 +24,29 @@ REGIME_VOL_WINDOW = 20       # rolling window for realised volatility
 REGIME_LOOKBACK = 500        # rolling window for percentile threshold
 REGIME_PERCENTILE = 90.0     # percentile threshold for High Vol
 
+# Ajustes de Matplotlib optimizados para publicación académica y legibilidad
 plt.rcParams.update({
     "font.family": "serif",
     "font.size": 10,
-    "axes.titlesize": 12,
+    "axes.titlesize": 11,
     "axes.labelsize": 10,
-    "xtick.labelsize": 8,
-    "ytick.labelsize": 8,
-    "legend.fontsize": 8,
+    "xtick.labelsize": 9,
+    "ytick.labelsize": 9,
+    "legend.fontsize": 9,
     "figure.dpi": 150,
     "savefig.dpi": 300,
     "savefig.bbox": "tight",
+    "grid.alpha": 0.4,
+    "grid.linestyle": ":",
 })
 plt.style.use("seaborn-v0_8-whitegrid")
 
+# Paleta de colores Accesible / Contraste B&W (Inspirada en Okabe-Ito)
+COLOR_BASE = "#000000"       # Negro puro para líneas principales
+COLOR_ALT1 = "#0072B2"       # Azul oscuro (GARCH-t / n=58) -> Gris oscuro en B&W
+COLOR_ALT2 = "#D55E00"       # Naranja rojizo (XGBoost / n=250) -> Gris medio en B&W
+COLOR_LIGHT = "#999999"      # Gris para fondo/retornos
+COLOR_SHADE = "#E69F00"      # Color de fondo para regímenes (fácilmente distinguible)
 
 def load_fibra_series():
     """Load full FIBRA index returns from cached raw data."""
@@ -50,41 +58,41 @@ def load_fibra_series():
 
 def load_aligned_forecasts():
     """Load the aligned out-of-sample forecast file."""
-    df = pd.read_csv(os.path.join(OUTPUT, "aligned_forecasts_enhanced.csv"),
+    df = pd.read_csv(os.path.join(OUTPUT, "aligned_forecasts.csv"),
                      index_col=0, parse_dates=True)
     return df
 
 
 # ---------------------------------------------------------------------------
-# Figure 1 — Volatility regimes (full available sample, true pipeline params)
+# Figure 1 — Volatility regimes (Hatching para B&W y estilos de línea claros)
 # ---------------------------------------------------------------------------
 def generate_fig1_volatility_regimes():
-    print("Generating fig1_volatility_regimes.png ...")
+    print("Generating fig1_volatility_regimes (PNG & PDF) ...")
     df = load_fibra_series()
-
     ret = df["log_return"]
 
-    # 20-day rolling realised vol, shifted to avoid look-ahead
     rv = ret.rolling(REGIME_VOL_WINDOW).std().shift(1)
     df["rv"] = rv
 
-    # 90th percentile on rolling 500-day window (matches run_analysis.py)
     rolling_threshold = rv.rolling(REGIME_LOOKBACK).quantile(REGIME_PERCENTILE / 100.0)
     df["threshold"] = rolling_threshold
-
     df["high_vol"] = (df["rv"] > df["threshold"]) & df["threshold"].notna()
 
-    # Start plot after first valid threshold (need at least 520 days)
     first_valid = df["threshold"].first_valid_index()
     plot_df = df.loc[first_valid:].copy()
 
     fig, ax = plt.subplots(figsize=(12, 5))
-    ax.plot(plot_df.index, plot_df["rv"], color="#2c3e50", linewidth=0.8,
+    
+    # Línea 1: Continua y delgada
+    ax.plot(plot_df.index, plot_df["rv"], color=COLOR_BASE, linewidth=0.8, linestyle="-",
             label=f"{REGIME_VOL_WINDOW}-day rolling realised volatility")
-    ax.plot(plot_df.index, plot_df["threshold"], color="#c0392b", linewidth=1.0,
+    
+    # Línea 2: Discontinua (dashed) y más gruesa para contraste inmediato
+    ax.plot(plot_df.index, plot_df["threshold"], color=COLOR_ALT1, linewidth=1.5,
             linestyle="--",
             label=f"{REGIME_PERCENTILE:.0f}th pctile ({REGIME_LOOKBACK}-day rolling)")
 
+    # Zonas de régimen usando patrones de rayas (hatching) para impresión sin color
     high = plot_df[plot_df["high_vol"]]
     if not high.empty:
         starts = [high.index[0]]
@@ -95,9 +103,11 @@ def generate_fig1_volatility_regimes():
                 ends.append(high.index[i - 1])
                 starts.append(high.index[i])
         ends.append(high.index[-1])
+        
         for s, e in zip(starts, ends):
-            ax.axvspan(s, e, alpha=0.2, color="#e74c3c",
-                       label="High Vol" if s == starts[0] else "")
+            # hatch='//' crea líneas diagonales visibles en blanco y negro
+            ax.axvspan(s, e, alpha=0.15, color=COLOR_SHADE, hatch="//", edgecolor=COLOR_SHADE,
+                       label="High Vol Regime" if s == starts[0] else "")
 
     n_high = plot_df["high_vol"].sum()
     n_total = len(plot_df)
@@ -106,47 +116,54 @@ def generate_fig1_volatility_regimes():
         f"({n_high:,} High Vol / {n_total:,} total)"
     )
     ax.set_ylabel("Daily volatility (std. dev.)")
-    ax.legend(loc="upper right")
+    ax.legend(loc="upper right", frameon=True, facecolor="white", framealpha=0.9)
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
     ax.xaxis.set_major_locator(mdates.YearLocator())
+    
     plt.tight_layout()
     fig.savefig(os.path.join(OUTPUT_FIGS, "fig1_volatility_regimes.png"))
+    fig.savefig(os.path.join(OUTPUT_FIGS, "fig1_volatility_regimes.pdf"))
     plt.close(fig)
-    print(f"  -> output/figures/fig1_volatility_regimes.png  ({n_high} High Vol / {n_total} total)")
 
 
 # ---------------------------------------------------------------------------
-# Figure 2 — VaR violations with regime shading (uses aligned CSV directly)
+# Figure 2 — VaR violations (Contraste estricto de formas y estilos de línea)
 # ---------------------------------------------------------------------------
 def generate_fig2_var_violations():
-    print("Generating fig2_var_violations.png ...")
+    print("Generating fig2_var_violations (PNG & PDF) ...")
     aligned = load_aligned_forecasts()
 
     fig, ax = plt.subplots(figsize=(12, 5))
 
-    ax.plot(aligned.index, aligned["return"], color="#7f8c8d",
-            linewidth=0.5, alpha=0.7, label="Daily log-return")
+    # Retornos en gris claro de fondo para no ensuciar las líneas de decisión
+    ax.plot(aligned.index, aligned["return"], color=COLOR_LIGHT,
+            linewidth=0.5, alpha=0.6, label="Daily log-return")
 
-    ax.plot(aligned.index, -aligned["var_garch_t"], color="#2980b9",
-            linewidth=1.2, linestyle="--", label="VaR 95% (GARCH-t)")
+    # GARCH-t: Línea discontinua (dashed) azul/gris oscuro
+    ax.plot(aligned.index, -aligned["var_garch_t"], color=COLOR_ALT1,
+            linewidth=1.4, linestyle="--", label="VaR 95% (GARCH-t)")
 
-    ax.plot(aligned.index, -aligned["var_xgb_ensemble"], color="#d35400",
-            linewidth=1.2, linestyle="-.", label="VaR 95% (XGBoost Ens.)")
+    # XGBoost: Línea punto-raya (dashdot) naranja/gris medio
+    ax.plot(aligned.index, -aligned["var_xgb_ensemble"], color=COLOR_ALT2,
+            linewidth=1.4, linestyle="-.", label="VaR 95% (XGBoost Ens.)")
 
+    # Brechas de GARCH-t: Cuadrados oscuros con borde
     gt_breaches = aligned["return"] < -aligned["var_garch_t"]
     gb = aligned[gt_breaches]
     if not gb.empty:
-        ax.scatter(gb.index, gb["return"], color="#2980b9", s=25,
-                   marker="s", zorder=5, edgecolors="k", linewidths=0.3,
+        ax.scatter(gb.index, gb["return"], color=COLOR_ALT1, s=35,
+                   marker="s", zorder=5, edgecolors="k", linewidths=0.7,
                    label=f"GARCH-t breach ({gt_breaches.sum()})")
 
+    # Brechas de XGBoost: Triángulos apuntando hacia arriba vacíos o con alto contraste
     xgb_breaches = aligned["return"] < -aligned["var_xgb_ensemble"]
     xb = aligned[xgb_breaches]
     if not xb.empty:
-        ax.scatter(xb.index, xb["return"], color="#d35400", s=25,
-                   marker="^", zorder=5, edgecolors="k", linewidths=0.3,
+        ax.scatter(xb.index, xb["return"], color="#FFFFFF", s=40,
+                   marker="^", zorder=5, edgecolors=COLOR_ALT2, linewidths=1.2,
                    label=f"XGBoost Ens. breach ({xgb_breaches.sum()})")
 
+    # Régimen de volatilidad con patrón de líneas verticales ('||')
     hv = aligned[aligned["regime"] == "High Vol"]
     if not hv.empty:
         starts = [hv.index[0]]
@@ -157,25 +174,25 @@ def generate_fig2_var_violations():
                 starts.append(hv.index[i])
         ends.append(hv.index[-1])
         for s, e in zip(starts, ends):
-            ax.axvspan(s, e, alpha=0.12, color="#c0392b",
-                       label="High Vol" if s == starts[0] else "")
+            ax.axvspan(s, e, alpha=0.12, color=COLOR_SHADE, hatch="\\\\", edgecolor=COLOR_SHADE,
+                       label="High Vol Regime" if s == starts[0] else "")
 
     ax.set_ylabel("Log-return")
     ax.set_title("FIBRA Index — 95% VaR Backtest: GARCH-t vs. XGBoost Ensemble")
-    ax.legend(loc="upper right", ncol=2)
+    ax.legend(loc="upper right", ncol=2, frameon=True, facecolor="white")
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
     ax.xaxis.set_major_locator(mdates.YearLocator())
+    
     plt.tight_layout()
     fig.savefig(os.path.join(OUTPUT_FIGS, "fig2_var_violations.png"))
+    fig.savefig(os.path.join(OUTPUT_FIGS, "fig2_var_violations.pdf"))
     plt.close(fig)
-    print("  -> output/figures/fig2_var_violations.png")
 
 
 # ---------------------------------------------------------------------------
-# Figure 3 — Kupiec power curve for n=58 and n=250
+# Figure 3 — Kupiec power curve (Marcadores y cajas de texto legibles)
 # ---------------------------------------------------------------------------
 def kupiec_power_curve(n, alpha=0.05, true_rates=None, n_sim=3000):
-    """Simulate power curve via binomial draws."""
     if true_rates is None:
         true_rates = np.linspace(0.025, 0.20, 20)
     rng = np.random.default_rng(42)
@@ -201,43 +218,49 @@ def kupiec_power_curve(n, alpha=0.05, true_rates=None, n_sim=3000):
 
 
 def generate_fig3_power_curve():
-    print("Generating fig3_power_curve.png ...")
-    true_rates, pow58 = kupiec_power_curve(58, n_sim=3000)
+    print("Generating fig3_power_curve (PNG & PDF) ...")
+    true_rates, pow62 = kupiec_power_curve(62, n_sim=3000)
     _, pow250 = kupiec_power_curve(250, n_sim=3000)
 
     fig, ax = plt.subplots(figsize=(8, 5))
 
-    ax.plot(true_rates, pow58, color="#2980b9", linewidth=2.0,
-            marker="o", markersize=3, label="n = 58")
-    ax.plot(true_rates, pow250, color="#27ae60", linewidth=2.0,
-            marker="s", markersize=3, label="n = 250")
+    # n=62: Línea continua con círculos pequeños
+    ax.plot(true_rates, pow62, color=COLOR_ALT1, linewidth=1.8,
+            linestyle="-", marker="o", markersize=4, label="n = 62")
+    
+    # n=250: Línea discontinua con cuadrados pequeños
+    ax.plot(true_rates, pow250, color=COLOR_ALT2, linewidth=1.8,
+            linestyle="--", marker="s", markersize=4, label="n = 250")
 
-    ax.axhline(y=0.05, color="#c0392b", linestyle="--", linewidth=1.0,
+    # Líneas de referencia con alta distinción (Gris oscuro y negro con estilos claros)
+    ax.axhline(y=0.05, color=COLOR_BASE, linestyle=":", linewidth=1.2,
                label="Significance level (5%)")
-    ax.axvline(x=0.05, color="#7f8c8d", linestyle=":", linewidth=1.0,
+    ax.axvline(x=0.05, color=COLOR_LIGHT, linestyle="-.", linewidth=1.0,
                label="Nominal rate (5%)")
 
-    for n, pwr, col in [(58, pow58, "#2980b9"), (250, pow250, "#27ae60")]:
+    # Ajuste de anotaciones para evitar solapamientos visuales en escala de grises
+    for n, pwr, col, offset_y in [(62, pow62, COLOR_ALT1, 0.08), (250, pow250, COLOR_ALT2, -0.08)]:
         idx10 = np.searchsorted(true_rates, 0.10)
         if idx10 < len(pwr):
             ax.annotate(f"Power at 10%: {pwr[idx10]:.2f}",
                         xy=(0.10, pwr[idx10]),
-                        xytext=(0.12, pwr[idx10] + 0.06),
-                        arrowprops=dict(arrowstyle="->", color=col, lw=0.8),
-                        fontsize=8, color=col,
+                        xytext=(0.12, pwr[idx10] + offset_y),
+                        arrowprops=dict(arrowstyle="->", color=col, lw=1.0),
+                        fontsize=8.5, color=COLOR_BASE,
                         bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
-                                  alpha=0.8, edgecolor="#bdc3c7"))
+                                  alpha=0.9, edgecolor=COLOR_LIGHT))
 
     ax.set_xlabel("True breach rate")
     ax.set_ylabel("Power (rejection rate)")
     ax.set_title("Kupiec POF Test — Power Curve")
-    ax.legend(loc="lower right")
+    ax.legend(loc="lower right", frameon=True, facecolor="white")
     ax.set_xlim(0.02, 0.20)
     ax.set_ylim(-0.02, 1.02)
+    
     plt.tight_layout()
     fig.savefig(os.path.join(OUTPUT_FIGS, "fig3_power_curve.png"))
+    fig.savefig(os.path.join(OUTPUT_FIGS, "fig3_power_curve.pdf"))
     plt.close(fig)
-    print("  -> output/figures/fig3_power_curve.png")
 
 
 # ---------------------------------------------------------------------------
@@ -247,4 +270,4 @@ if __name__ == "__main__":
     generate_fig1_volatility_regimes()
     generate_fig2_var_violations()
     generate_fig3_power_curve()
-    print("\nAll figures saved to output/figures/")
+    print("\n[SUCCESS] All figures saved to output/figures/ in BOTH .png and .pdf formats.")

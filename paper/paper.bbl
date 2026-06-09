@@ -1,45 +1,57 @@
 \begin{thebibliography}{}
 
-\bibitem[{Basel Committee on Banking Supervision}, 2019]{bcbs2019minimum}
-{Basel Committee on Banking Supervision} (2019).
-\newblock Minimum capital requirements for market risk.
-\newblock Technical report, Bank for International Settlements.
-\newblock d457.
-
 \bibitem[Bollerslev, 1986]{bollerslev1986generalized}
 Bollerslev, T. (1986).
 \newblock Generalized autoregressive conditional heteroskedasticity.
 \newblock {\em Journal of Econometrics}, 31(3):307--327.
-\newblock doi:10.1016/0304-4076(86)90063-1.
 
 \bibitem[Bollerslev, 1987]{bollerslev1987conditionally}
 Bollerslev, T. (1987).
 \newblock A conditionally heteroskedastic time series model for speculative
   prices and rates of return.
-\newblock {\em Review of Economics and Statistics}, 69(3):542--547.
+\newblock {\em The Review of Economics and Statistics}, 69(3):542--547.
+
+\bibitem[Campbell, 2007]{campbell2007review}
+Campbell, S.~D. (2007).
+\newblock A review of backtesting and backtesting procedures.
+\newblock {\em The Journal of Risk}, 9(2):1--17.
 
 \bibitem[Christoffersen, 1998]{christoffersen1998evaluating}
 Christoffersen, P.~F. (1998).
 \newblock Evaluating interval forecasts.
 \newblock {\em International Economic Review}, 39(4):841--862.
-\newblock doi:10.2307/2527341.
+
+\bibitem[Cotter and Stevenson, 2006]{cotter2006multivariate}
+Cotter, J. and Stevenson, S. (2006).
+\newblock Multivariate modeling of daily {REIT} volatility.
+\newblock {\em The Journal of Real Estate Finance and Economics},
+  32(3):305--325.
 
 \bibitem[Escanciano and Olmo, 2010]{escanciano2010backtesting}
 Escanciano, J.~C. and Olmo, J. (2010).
-\newblock Backtesting parametric value‑at‑risk with estimation risk.
+\newblock Backtesting parametric value-at-risk with estimation risk.
 \newblock {\em Journal of Business \& Economic Statistics}, 28(1):36--51.
-\newblock doi:10.1198/jbes.2009.07051.
+
+\bibitem[Gu et~al., 2020]{gu2020empirical}
+Gu, S., Kelly, B., and Xiu, D. (2020).
+\newblock Empirical asset pricing via machine learning.
+\newblock {\em The Review of Financial Studies}, 33(5):2223--2273.
 
 \bibitem[Kratz et~al., 2018]{kratz2018multinomial}
 Kratz, M., Lok, Y.~H., and McNeil, A.~J. (2018).
-\newblock Multinomial var backtests.
+\newblock Multinomial {VaR} backtests: A simple implicit approach to
+  backtesting expected shortfall.
 \newblock {\em Journal of Banking \& Finance}, 88:393--407.
-\newblock doi:10.1016/j.jbankfin.2017.12.003.
 
 \bibitem[Kupiec, 1995]{kupiec1995techniques}
 Kupiec, P.~H. (1995).
 \newblock Techniques for verifying the accuracy of risk measurement models.
-\newblock {\em Journal of Derivatives}, 3(2):73--84.
-\newblock doi:10.3905/jod.1995.407942.
+\newblock {\em The Journal of Derivatives}, 3(2):73--84.
+
+\bibitem[Zhou and Anderson, 2012]{zhou2012extreme}
+Zhou, J. and Anderson, R.~I. (2012).
+\newblock Extreme risk measures for international {REIT} markets.
+\newblock {\em The Journal of Real Estate Finance and Economics},
+  45(1):152--170.
 
 \end{thebibliography}

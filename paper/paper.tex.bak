@@ -33,15 +33,11 @@
 
 \textbf{Figure 2.} Distribution of Kupiec $p$-values under $H_0: p = 0.05$ for $n = 62$ and $n = 95$, based on 5,000 binomial draws; the empirical rejection rate is shown in each panel.
 
-\textbf{Figure 3.} Kupiec $p$-value as a function of breach count $x$ at $n = 62$ and $\alpha = 0.05$, with diamond markers showing each model's observed breach count and XGBoost-$t$ ($x = 6$) sitting one breach below the rejection threshold.
+\textbf{Figure 3.} Kupiec $p$-value as a function of breach count $x$ at $n = 62$ and $\alpha = 0.05$; diamond markers show each model's observed breach count.
 
 \textbf{Figure 4.} Conservatism metric $C = \hat{p} - \alpha$ for each model on FIBRATC14.MX ($n = 62$, 95\% VaR).
 
-\textbf{Figure 5.} Rolling 30-day breach rates for all six models on FIBRATC14.MX, with the horizontal dashed line marking the nominal 5\% rate.
-
-\medskip
-
-\textbf{Figure 6.} Decision framework for small-sample VaR validation, starting from the evaluation sample size and proceeding through conservatism assessment to a validation decision.
+\textbf{Figure 5.} Rolling 30-day breach rates for GARCH-$t$, XGBoost-Pure, and Historical VaR on FIBRATC14.MX.
 
 \textbf{Table 1.} Data profile; all series span January 2018 to April 2026.
 
@@ -55,7 +51,7 @@
 
 % --- Abstract ---
 \begin{abstract}
-Ex-ante volatility regime definitions consume approximately 520 trading days for classification, reducing the usable out-of-sample evaluation window to 62--95 observations for Mexican FIBRAs. At $n = 62$, the Kupiec test rejects a correctly specified model 7.6\% of the time (nominal 5\%) and has only 43\% power to detect a model breaching at double the nominal rate. The Christoffersen test is uninformative below $n \approx 100$. We propose a framework centred on the exact binomial test, Clopper--Pearson confidence intervals, and a conservatism metric $C = \hat{p} - \alpha$. Applied to FIBRA data, GARCH(1,1)-$t$ produces a breach rate of 4.8\% ($C = -0.002$) while XGBoost-Pure produces 11.3\% ($C = +0.063$). The pattern holds across five equity tickers: GARCH-$t$ pooled rate 3.6\%, XGBoost pooled rate 9.7\% ($p < 0.0001$). When evaluation windows fall below 100 observations, standard backtests become weak validation tools. We therefore propose a practical framework combining exact inference, directional conservatism, and cross-asset confirmation.
+Ex-ante volatility regime definitions consume approximately 520 trading days for classification, reducing the usable out-of-sample evaluation window to 62--95 observations for Mexican FIBRAs. At $n = 62$, the Kupiec test rejects a correctly specified model 7.6\% of the time (nominal 5\%) and has only 43\% power to detect a model breaching at double the nominal rate. The Christoffersen test is uninformative below $n \approx 100$. We propose a framework centred on the exact binomial test, Clopper--Pearson confidence intervals, and a conservatism metric $C = \hat{p} - \alpha$. Applied to FIBRA data, GARCH(1,1)-$t$ produces a breach rate of 4.8\% ($C = -0.002$) while XGBoost-Pure produces 11.3\% ($C = +0.063$). The pattern holds across five equity tickers: GARCH-$t$ pooled rate 3.6\%, XGBoost pooled rate 9.7\% ($p < 0.0001$). When evaluation windows fall below 100 observations, standard backtests lack discriminatory power and directional conservatism across assets provides more reliable guidance than isolated $p$-values.
 \end{abstract}
 
 \bigskip
@@ -64,13 +60,13 @@ Ex-ante volatility regime definitions consume approximately 520 trading days for
 \medskip
 \noindent\textbf{Key messages:}
 \begin{itemize}
-  \item Kupiec size inflates to 7.6\% at $n = 62$
-  \item Power remains below 50\% for 10\% breach rates
-  \item GARCH-$t$ stays near nominal VaR coverage
-  \item Exact inference improves small-sample validation
+  \item Kupiec test size inflates to 7.6\% at $n = 62$ (nominal 5\%)
+  \item Power remains below 50\% for double the nominal breach rate
+  \item GARCH-$t$ stays near nominal VaR coverage across all tickers
+  \item Conservatism metric $C$ replaces asymptotic $p$-values when $n < 100$
 \end{itemize}
 
-\title{A Validation Framework for Small-Sample VaR Backtesting under Ex-Ante Volatility Regime Segmentation}
+\title{Finite-Sample Limitations of VaR Backtesting\\ under Ex-Ante Volatility Regimes: Evidence from Mexican FIBRAs}
 \maketitle
 
 % ============================================================
@@ -83,16 +79,6 @@ Ex-ante regime definitions, which classify each trading day using only informati
 
 At $n = 62$, the Kupiec test rejects a correctly specified model 7.6\% of the time (nominal 5\%) and has less than 50\% power against a model that breaches at twice the nominal rate. The Christoffersen test is effectively uninformative. We quantify this degradation and propose a framework based on exact binomial $p$-values, Clopper--Pearson confidence intervals, and a conservatism metric $C = \hat{p} - \alpha$.
 
-\subsection{Contributions}
-
-This paper makes three contributions.
-
-\begin{enumerate}
-    \item It quantifies the finite-sample operating characteristics of the Kupiec and exact binomial tests under evaluation windows generated by ex-ante volatility regime definitions.
-    \item It demonstrates that regime segmentation can systematically reduce effective validation samples below 100 observations, rendering standard VaR backtests weak diagnostic tools.
-    \item It proposes a practical validation framework based on exact binomial inference, Clopper--Pearson intervals, directional conservatism metrics, and cross-asset confirmation.
-\end{enumerate}
-
 % ============================================================
 \section{Literature Review}
 % ============================================================
@@ -102,10 +88,6 @@ VaR backtesting has been studied extensively for large samples. \citet{kupiec199
 The finite-sample properties of these tests are documented in simulation studies \citep{campbell2007review}, but the interaction with ex-ante regime definitions---which impose an additional sample-size constraint---has received little attention. This paper fills that gap in the context of Mexican FIBRAs, a short-history emerging-market asset class.
 
 Machine learning methods in financial econometrics have proliferated \citep{gu2020empirical}, but their performance in small-sample VaR settings is not well characterized. \citet{zhou2012extreme} and \citet{cotter2006multivariate} document extreme risk dynamics in REIT markets, providing a foundation for the empirical application.
-
-\subsection{Small-Sample Model Validation}
-
-Although finite-sample properties of VaR backtests have been discussed previously, most studies focus on asymptotic behavior or simulation environments disconnected from operational model validation. The interaction between ex-ante segmentation procedures and validation power remains largely unexplored. This paper contributes to that literature by explicitly linking sample construction decisions to the reliability of validation outcomes.
 
 % ============================================================
 \section{Data}
@@ -131,7 +113,7 @@ USDMXN=X      & USD/MXN exchange rate                 & 2,169 \\
 \end{tabular}
 \end{table}
 
-The empirical analysis concentrates on FIBRATC14.MX. A multi-asset robustness check across the five equity tickers supplements the main results.
+The empirical analysis concentrates on FIBRATC14.MX. A multi-asset robustness check across the five equity tickers supplements the main results. All raw data are cached with MD5 checksums for reproducibility. A data validation layer checks for missing values, non-trading-day alignment, return calculation consistency, and extreme returns before any model is fitted.
 
 % ============================================================
 \section{Methodology}
@@ -173,7 +155,7 @@ r_t &= \sigma_t \cdot \varepsilon_t, \qquad \varepsilon_t \sim t_{\nu} \text{ (s
 Parameters, including the degrees of freedom $\nu$, are estimated by maximum likelihood \cite{bollerslev1986generalized,bollerslev1987conditionally}. VaR is $\mathrm{VaR}_t^{\mathrm{GARCH}}(\alpha) = -\hat{\sigma}_t \cdot F_{t_{\nu}}^{-1}(\alpha)$. A GARCH-Normal variant is also included for comparison.
 
 \paragraph{XGBoost volatility models.}
-Gradient boosting models predict conditional volatility $\sigma_{t+1}$ from lagged return and volatility features. VaR is derived as $\mathrm{VaR}_t = -\hat{\sigma}_{t} \cdot z$ where $z$ is either the standard Normal quantile $z_{\alpha}$ (XGBoost-Pure, XGBoost-Ensemble) or the Student-$t$ quantile with $\nu = 5$ (XGBoost-$t$). Two volatility-input variants are estimated: XGBoost-Pure (29 base features) and XGBoost-Ensemble (augmented with GARCH-$t$ forecasts). Fixed parameters (100 trees, depth 3, learning rate 0.05) are identical across tickers.
+Gradient boosting models predict conditional volatility $\sigma_{t+1}$ from lagged return and volatility features. VaR is derived parametrically as $\mathrm{VaR}_t = -\hat{\sigma}_{t} \cdot z_{\alpha}$ (Normal quantile). Two variants are estimated: XGBoost-Pure (29 base features) and XGBoost-Ensemble (augmented with GARCH-$t$ forecasts). Fixed parameters (100 trees, depth 3, learning rate 0.05) are identical across tickers.
 
 \subsection{Backtesting Framework}
 
@@ -195,10 +177,6 @@ We compute the rejection probability of the Kupiec test as a function of the tru
 \mathrm{Power}(p_{\text{true}}) = \sum_{x=0}^{n} \binom{n}{x} \, p_{\text{true}}^{x} \, (1-p_{\text{true}})^{n-x} \cdot \mathbf{1}\{\text{test rejects } H_0 \text{ at count } x\}.
 \end{equation}
 This approach is exact and, for $n \le 500$, runs in milliseconds.
-
-\subsection{Validation Philosophy}
-
-The objective is not to identify a single statistically superior model. Instead, the objective is to determine whether available evidence is sufficient to classify candidate models as conservative, approximately calibrated, or anti-conservative under severe sample-size constraints.
 
 % ============================================================
 \section{Power Analysis and Size Distortion}
@@ -229,9 +207,6 @@ Second, power against economically meaningful misspecification is limited. A mod
 
 Third, the difference between the Kupiec and exact binomial tests narrows for power computations (they agree to three decimal places at $p_{\text{true}} \ge 0.07$) but diverges at the null, where the exact test provides better size control.
 
-\medskip
-\noindent\textbf{Proposition 1.} For $\alpha = 0.05$ and evaluation samples below 100 observations, standard VaR coverage tests possess insufficient power to reliably distinguish between a correctly specified model and a model whose true breach rate is approximately double the nominal rate. Evidence is provided in Table~\ref{tab:power}: at $n = 62$ the power against $p = 0.10$ is only 42.9\%, and at $n = 95$ only 48.2\%.
-
 Figure~\ref{fig:power} displays the full power curves. Figure~\ref{fig:size} shows the distribution of Kupiec $p$-values under the null, revealing the deviation from uniformity that drives the size distortion.
 
 \begin{figure}[H]
@@ -248,7 +223,7 @@ Figure~\ref{fig:power} displays the full power curves. Figure~\ref{fig:size} sho
 \label{fig:size}
 \end{figure}
 
-The practical implication is straightforward: at $n \approx 60$--$95$, standard backtests cannot reliably distinguish between a well-calibrated model and one that is materially anti-conservative. A non-rejection does not imply good calibration; a rejection does not definitively identify a poor model. Model rankings should therefore not be based solely on isolated rejection decisions, but on the consistency of directional evidence across validation exercises.
+The practical implication is straightforward: at $n \approx 60$--$95$, standard backtests cannot reliably distinguish between a well-calibrated model and one that is materially anti-conservative. A non-rejection does not imply good calibration; a rejection does not definitively identify a poor model. Additional information is necessary.
 
 % ============================================================
 \section{Empirical Results}
@@ -256,7 +231,7 @@ The practical implication is straightforward: at $n \approx 60$--$95$, standard 
 
 \subsection{Main Analysis: FIBRATC14.MX ($n = 62$)}
 
-Table~\ref{tab:fibraresults} reports the full set of backtesting metrics for the six models on the FIBRA Index ETF. The expected number of 95\% breaches under correct specification is $62 \times 0.05 = 3.10$, with a standard deviation of $1.72$.
+Table~\ref{tab:fibraresults} reports the full set of backtesting metrics for the five models on the FIBRA Index ETF. The expected number of 95\% breaches under correct specification is $62 \times 0.05 = 3.10$, with a standard deviation of $1.72$.
 
 \begin{table}[H]
 \centering
@@ -269,23 +244,22 @@ Model & Breaches & Rate & $C$ & Exact $p$ & CP-CI \\
 GARCH-Normal     & 7 & 0.113 & +0.063 & 0.035 & [0.047, 0.219] \\
 GARCH-$t$        & 3 & 0.048 & $-$0.002 & 1.000 & [0.010, 0.135] \\
 XGBoost-Pure     & 7 & 0.113 & +0.063 & 0.035 & [0.047, 0.219] \\
-XGBoost-$t$      & 6 & 0.097 & +0.047 & 0.131 & [0.036, 0.199] \\
 XGBoost-Ensemble & 7 & 0.113 & +0.063 & 0.035 & [0.047, 0.219] \\
 Historical VaR   & 4 & 0.065 & +0.015 & 0.553 & [0.018, 0.157] \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-GARCH-$t$ is the model whose breach rate (4.8\%) is closest to the nominal 5\% level, with a conservatism metric of $C = -0.002$---approximately calibrated. GARCH-Normal is anti-conservative with 11.3\% breaches ($C = +0.063$), reflecting the thinner tails of the Normal distribution relative to the data. XGBoost-Pure and XGBoost-Ensemble produce identical breach rates of 11.3\% ($C = +0.063$), indicating that the GARCH-t volatility features added in the ensemble variant did not materially alter tail calibration. XGBoost-$t$, which replaces the Normal quantile with a Student-$t$ quantile ($\nu = 5$), breaches at 9.7\% ($C = +0.047$), partially correcting the over-breaching of the pure XGBoost variants. Historical VaR is mildly anti-conservative at 6.5\% ($C = +0.015$).
+GARCH-$t$ is the model whose breach rate (4.8\%) is closest to the nominal 5\% level, with a conservatism metric of $C = -0.002$---approximately calibrated. GARCH-Normal is anti-conservative with 11.3\% breaches ($C = +0.063$), reflecting the thinner tails of the Normal distribution relative to the data. Both XGBoost-Pure and XGBoost-Ensemble produce identical breach rates of 11.3\% ($C = +0.063$), indicating that the GARCH-t volatility features added in the ensemble variant did not materially alter tail calibration. Historical VaR is mildly anti-conservative at 6.5\% ($C = +0.015$).
 
-The exact binomial $p$-value is 0.035 for GARCH-Normal, XGBoost-Pure, and XGBoost-Ensemble, and 0.131 for XGBoost-$t$. However, given the power analysis in Section~4, these rejections should be interpreted cautiously: at $n = 62$, the exact binomial test rejects a correctly specified model 3.5\% of the time, and the Kupiec test rejects it 7.6\% of the time. The evidence against these models is directionally meaningful but not statistically definitive in isolation.
+The exact binomial $p$-value is 0.035 for GARCH-Normal and both XGBoost variants. However, given the power analysis in Section~4, these rejections should be interpreted cautiously: at $n = 62$, the exact binomial test rejects a correctly specified model 3.5\% of the time, and the Kupiec test rejects it 7.6\% of the time. The evidence against these models is directionally meaningful but not statistically definitive in isolation.
 
 The Christoffersen independence test yields $p \ge 0.10$ for all models at this sample size, providing no useful discrimination.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.95\textwidth]{../output/figures/pvalue_staircase.pdf}
-\caption{Kupiec $p$-value as a function of the breach count $x$ for $n = 62$ and $\alpha = 0.05$. The diamond markers show the observed breach count of each model. XGBoost-$t$ sits at $x = 6$ ($p = 0.132$), one breach below the rejection threshold; at $x = 7$ the test rejects ($p = 0.049$). GARCH-Normal, XGBoost-Pure, and XGBoost-Ensemble each sit at $x = 7$, one breach past the 5\% threshold. A single additional breach---one trading day out of 62---flips the test outcome.}
+\caption{Kupiec $p$-value as a function of the breach count $x$ for $n = 62$ and $\alpha = 0.05$. The diamond markers show the observed breach count of each model. At $x = 6$ the model is not rejected ($p = 0.132$); at $x = 7$ it is rejected ($p = 0.049$). Three models (GARCH-Normal, XGBoost-Pure, XGBoost-Ensemble) sit at $x = 7$, one breach past the 5\% threshold. A single additional breach---one trading day out of 62---flips the test outcome.}
 \label{fig:staircase}
 \end{figure}
 
@@ -318,7 +292,7 @@ Pooled       & 443 & 0.036 & $-$0.014 & 0.097 & +0.047 \\
 
 The directional pattern is consistent across all five equity tickers: GARCH-$t$ breach rates are at or below the nominal 5\% in every case (2.1\%--4.8\%), while XGBoost-Pure breach rates range from 7.3\% to 13.7\%. The pooled breach rate across all tickers is 3.6\% for GARCH-$t$ ($C = -0.014$, conservative) and 9.7\% for XGBoost-Pure ($C = +0.047$, anti-conservative). The pooled exact binomial $p$-value for GARCH-$t$ is 0.23, providing insufficient evidence to reject correct coverage. For XGBoost-Pure, the pooled exact binomial $p$-value is $< 10^{-4}$, indicating a statistically clear deviation from the nominal rate. With 443 pooled observations, the binomial test is considerably more informative than any single-ticker test.
 
-Figure~\ref{fig:conservatism} visualises the conservatism metric across all six models on the main ticker. Figure~\ref{fig:rolling} shows the 30-day rolling breach rate for the six models, illustrating the instability inherent in short evaluation windows.
+Figure~\ref{fig:conservatism} visualises the conservatism metric across models on the main ticker. Figure~\ref{fig:rolling} shows the 30-day rolling breach rate for the three best-performing models, illustrating the instability inherent in short evaluation windows.
 
 \begin{figure}[H]
 \centering
@@ -330,7 +304,7 @@ Figure~\ref{fig:conservatism} visualises the conservatism metric across all six 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.95\textwidth]{../output/figures/rolling_breach_rates.pdf}
-\caption{Rolling 30-day breach rates for all six models on FIBRATC14.MX. The horizontal dashed line marks the nominal 5\% rate.}
+\caption{Rolling 30-day breach rates for GARCH-$t$, XGBoost-Pure, and Historical VaR on FIBRATC14.MX. The horizontal dashed line marks the nominal 5\% rate. The wide bands reflect the small number of observations within each 30-day window.}
 \label{fig:rolling}
 \end{figure}
 
@@ -348,20 +322,6 @@ A Diebold--Mariano test of equal forecast accuracy for squared volatility (Newey
 The Kupiec test's $\chi^2_1$ approximation assumes a continuous test statistic, but at $n = 62$ with $\alpha = 0.05$ there are only 63 possible outcomes. This discreteness produces two problems. First, the null distribution of the LR statistic deviates from $\chi^2_1$, inflating the Type~I error to 7.6\% (nominal 5\%). Second, the $p$-value function has a stair-step shape where a single additional breach can flip the test from acceptance to rejection. Figure~\ref{fig:staircase} illustrates this: GARCH-$t$ ($x = 3$) obtains $p \approx 0.95$, but at $x = 7$ the $p$-value drops below 0.05. The exact binomial test reduces the size distortion to 3.5\% at $n = 62$ (a conservative bias rather than an inflationary one), but its power is nearly identical to the Kupiec test's---at 10\% true breaches, both detect the misspecification with only 43\% probability.
 
 The Christoffersen independence test is even less useful at these sample sizes. Across 200 Monte Carlo simulations using a GARCH(1,1)-$t$ data-generating process calibrated to emerging-market volatility, the Christoffersen test rejected the null of independent breaches in only 1.0\% of replications at $n = 58$ and 3.5\% at $n = 250$.\footnote{The Monte Carlo experiment is documented in the supplementary material and confirms that the limitations documented here are structural properties of the sample size, not artifacts of FIBRA returns.} A test that almost never rejects provides no diagnostic value, regardless of whether breaches are truly independent.
-
-\subsection{Monte Carlo Design}
-
-The simulation experiment employs a GARCH(1,1)-$t$ data-generating process calibrated to observed FIBRA volatility dynamics. Parameters are $\omega = 0.05$, $\alpha_1 = 0.10$, $\beta_1 = 0.85$, and $\nu = 6$, generating $N = 1500$ observations per replication with 200 independent replications across sample sizes $n \in \{58, 95, 250\}$. Each replication proceeds as follows:
-
-\begin{enumerate}
-    \item Simulate returns from the GARCH(1,1)-$t$ DGP.
-    \item Estimate competing models (GARCH-$t$, GARCH-Normal, XGBoost quantile, Historical VaR) on a 125-day rolling window.
-    \item Produce one-step-ahead VaR forecasts.
-    \item Apply Kupiec and Christoffersen tests at $\alpha = 0.05$.
-    \item Record rejection frequencies.
-\end{enumerate}
-
-This design isolates the effect of estimation risk under a known data-generating process and confirms that the limitations documented here are structural properties of the sample size, not artifacts of FIBRA returns. Full implementation details and results are provided in the supplementary material.
 
 \subsection{Practical Implications for Model Validation}
 
@@ -382,33 +342,16 @@ We suggest the following decision protocol when the evaluation window contains f
     \item \textbf{Asymptotic tests for reference only.} Kupiec and Christoffersen $p$-values may be reported for comparability with the literature, but decisions should not rest on them at $n < 100$. A non-significant Kupiec $p$-value at $n = 62$ is expected under the null roughly 92\% of the time, so it conveys little information about model quality.
 \end{enumerate}
 
-Figure~\ref{fig:framework} summarises this decision protocol as a flowchart.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.85\textwidth]{../output/figures/decision_framework.pdf}
-\caption{Decision framework for small-sample VaR validation.}
-\label{fig:framework}
-\end{figure}
-
 \subsection{Limitations}
 
 The numerical results depend on the specific configuration chosen here: a 125-day rolling estimation window, 20-day refit frequency, and a regime definition based on a 20-day volatility window with a 500-day lookback at the 90\textsuperscript{th} percentile. Changing any of these parameters would shift the aligned sample size and potentially the breach-rate ranking. That said, the structural problem---that ex-ante regime definitions consume data and that standard backtests lose discriminatory power below 100 observations---is independent of the specific parameterization. A Monte Carlo experiment using a GARCH(1,1)-$t$ data-generating process and 200 independent replications confirms that the Kupiec test rejects the true model 29.5\% of the time at $n = 58$ (nominal 5\%) and that no model achieves a Kupiec rejection rate above 35\% at that sample size, establishing a ceiling on what backtests can achieve with short evaluation windows.
 
 The XGBoost-$t$ variant uses a fixed $\nu = 5$ rather than estimating the degrees of freedom per refit window. Estimating $\nu$ from the data would be more consistent with the GARCH-$t$ specification but would also introduce additional parameter uncertainty in an already constrained setting. The pooled binomial test treats observations as independent despite the cross-sectional correlation among Mexican equity tickers; the reported pooled $p$-values are therefore indicative of direction and magnitude rather than exact. Future work with cluster-robust inference or panel methods would strengthen the pooled analysis. Finally, the model comparison here uses a single VaR level (95\%) and does not assess Expected Shortfall performance; extending the framework to 99\% VaR and ES would be a natural next step, though at $n = 62$ the expected number of 99\% breaches is only 0.62, making any backtest essentially uninformative at that level.
 
-\subsection{Relation to Basel Traffic-Light Approaches}
-
-Basel traffic-light frameworks assume sufficient observations to distinguish random variation from model misspecification. When effective sample sizes fall below 100 observations, traffic-light classifications become highly sensitive to single breaches and should therefore be interpreted cautiously.
-
-\subsection{Practical Implications for Model Governance}
-
-The findings have direct implications for model risk management frameworks such as SR~11-7. Validation teams operating with short histories, new products, or regime-conditioned samples should recognize that standard coverage tests may fail to discriminate between acceptable and materially deficient models. Supplemental diagnostics become necessary.
-
 \section{Conclusion}
 % ============================================================
 
-Standard VaR backtests become unreliable when the evaluation window falls below 100 observations, a condition that arises naturally under ex-ante volatility regime definitions. At $n = 62$, the Kupiec test has a Type~I error of 7.6\% (nominal 5\%) and power below 50\% against a model breaching at twice the nominal rate. The Christoffersen test is uninformative at these sample sizes. We propose augmenting traditional backtesting with exact binomial inference, Clopper--Pearson intervals, and directional conservatism metrics when sample sizes fall below 100 observations.
+Standard VaR backtests become unreliable when the evaluation window falls below 100 observations, a condition that arises naturally under ex-ante volatility regime definitions. At $n = 62$, the Kupiec test has a Type~I error of 7.6\% (nominal 5\%) and power below 50\% against a model breaching at twice the nominal rate. The Christoffersen test is uninformative at these sample sizes. We propose replacing asymptotic tests with exact binomial $p$-values, Clopper--Pearson confidence intervals, and a conservatism metric $C = \hat{p} - \alpha$---tools that remain valid regardless of sample size.
 
 Applied to Mexican FIBRAs, this framework shows GARCH-$t$ producing breach rates at or below the nominal 5\% level across all five tickers (pooled 3.6\%), while XGBoost-based models consistently over-breach (pooled 9.7\%, $p < 0.0001$). When $n < 100$, the question shifts from ``which model fits best?'' to ``which model is least likely to produce dangerously anti-conservative VaR forecasts.'' Parsimony is not a preference in such settings---it is imposed by the data. Future work could extend this analysis to Expected Shortfall, individual securities, and alternative regime configurations.
 
@@ -417,10 +360,10 @@ Applied to Mexican FIBRAs, this framework shows GARCH-$t$ producing breach rates
 The authors report no conflicts of interest. The authors alone are responsible for the content and writing of the paper.
 
 \section*{Use of Artificial Intelligence}
-DeepSeek V4 Flash was used as an editing aid for sentence structure, clarity, and organisation of the manuscript. DeepSeek V4 Pro assisted with background research, literature verification, and formatting checks. All empirical results, figures, tables, and substantive claims are the product of independently written and executed Python scripts. The authors take full responsibility for the final content.
+Portions of this manuscript were drafted with the assistance of a large language model (DeepSeek via OpenCode CLI), which was used as an editing aid for sentence construction. All empirical results, figures, tables, and substantive claims are the product of Python scripts written and executed by the authors, who take full responsibility for the final content.
 
 \section*{Data and Code Availability}
-Source code will be available through a public repository upon publication. The pipeline is deterministic (global seed 42). Figures and tables are reproducible from cached data.
+All source code for data downloading, model estimation, backtesting, and power analysis is publicly available at \texttt{https://github.com/ghpancardo/fibras}. Raw data are cached with per-file MD5 sidecar checksums and an aggregate \texttt{checksum.md5} (verifiable via \texttt{md5sum -c}). The pipeline verifies every cache load against its stored hash and re-downloads on mismatch. The full pipeline is deterministic (global seed 42) and all intermediate artifacts are saved to the \texttt{output/} directory. Figures and tables are reproducible from the cached data using the provided scripts.
 
 % ============================================================
 \bibliographystyle{apalike}

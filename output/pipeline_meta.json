@@ -1,7 +1,7 @@
 {
   "pipeline": "FIBRA VaR Refinement Pipeline",
-  "timestamp": "2026-05-24T02:17:01.696063",
-  "git_commit": "d2eae13",
+  "timestamp": "2026-06-08T22:18:33.599374",
+  "git_commit": "5a5b246",
   "global_seed": 42,
   "config": {
     "alpha": 0.05,

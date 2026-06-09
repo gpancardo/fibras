@@ -1,0 +1,36 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{mathptmx}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\pagestyle{empty}
+
+\begin{document}
+
+\begin{flushright}
+\today
+\end{flushright}
+
+\vspace{1cm}
+
+\noindent Dear Professor Satchell,
+
+\vspace{0.5cm}
+
+Please consider the attached manuscript, ``Finite-Sample Limitations of VaR Backtesting under Ex-Ante Volatility Regimes,'' for publication in the Journal of Risk Model Validation.
+
+Ex-ante volatility regimes for Mexican FIBRAs leave only 62--95 testable observations. At $n = 62$, the Kupiec test rejects a correctly specified model 7.6\% of the time (nominal 5\%) and has 43\% power against a model breaching at 10\%. The Christoffersen test is uninformative. The paper proposes replacing asymptotic tests with exact binomial inference and a conservatism metric $C = \hat{p} - \alpha$, neither of which depends on sample size. Across five equity tickers, GARCH-$t$ consistently calibrates near the nominal rate (pooled 3.6\%) while XGBoost-Pure over-breaches (9.7\%, $p < 0.0001$).
+
+The manuscript has not been published elsewhere nor submitted to another journal. A separate title page with identifying information is included for the blind review process. Data and code will be released after acceptance.
+
+The short history of many emerging-market instruments makes the finite-sample problem studied here directly relevant to risk managers and regulators working with those assets. More broadly, any validation exercise constrained by ex-ante regime definitions, new-product histories, or regulatory look-back windows faces the same structural limitation: below 100 observations, standard backtests lose discriminatory power. The decision framework proposed in Section~6 offers a practical alternative that requires no additional data and no asymptotic approximations.
+
+\vspace{0.5cm}
+
+\noindent Sincerely,
+
+\vspace{1cm}
+
+\noindent Germ\'an Pancardo
+
+\end{document}
