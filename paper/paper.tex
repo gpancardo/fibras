@@ -55,7 +55,7 @@
 
 % --- Abstract ---
 \begin{abstract}
-Ex-ante volatility regime definitions consume approximately 520 trading days for classification, reducing the usable out-of-sample evaluation window to 62--95 observations for Mexican FIBRAs. At $n = 62$, the Kupiec test rejects a correctly specified model 7.6\% of the time (nominal 5\%) and has only 43\% power to detect a model breaching at double the nominal rate. The Christoffersen test is uninformative below $n \approx 100$. We propose a framework centred on the exact binomial test, Clopper--Pearson confidence intervals, and a conservatism metric $C = \hat{p} - \alpha$. Applied to FIBRA data, GARCH(1,1)-$t$ produces a breach rate of 4.8\% ($C = -0.002$) while XGBoost-Pure produces 11.3\% ($C = +0.063$). The pattern holds across five equity tickers: GARCH-$t$ pooled rate 3.6\%, XGBoost pooled rate 9.7\% ($p < 0.0001$). When evaluation windows fall below 100 observations, standard backtests become weak validation tools. We therefore propose a practical framework combining exact inference, directional conservatism, and cross-asset confirmation.
+Ex-ante volatility regime definitions consume approximately 520 trading days for classification, reducing the usable out-of-sample evaluation window to 62--95 observations for Mexican FIBRAs. At $n = 62$, the Kupiec test rejects a correctly specified model 7.6\% of the time (nominal 5\%) and has only 43\% power to detect a model breaching at double the nominal rate. The Christoffersen test is uninformative below $n \approx 100$. We propose a framework centred on the exact binomial test, Clopper--Pearson confidence intervals, and a conservatism metric $C = \hat{p} - \alpha$. Applied to FIBRA data, GARCH(1,1)-$t$ produces a breach rate of 4.8\% ($C = -0.002$) while XGBoost-Pure produces 11.3\% ($C = +0.063$). The pattern holds across five equity tickers: GARCH-$t$ is at or below the nominal rate on every ticker (pooled 3.6\%) while XGBoost-Pure exceeds it on every ticker (pooled 9.7\%). When evaluation windows fall below 100 observations, standard backtests become weak validation tools. We therefore propose a practical framework combining exact inference, directional conservatism, and cross-asset confirmation.
 \end{abstract}
 
 \bigskip
@@ -173,7 +173,7 @@ r_t &= \sigma_t \cdot \varepsilon_t, \qquad \varepsilon_t \sim t_{\nu} \text{ (s
 Parameters, including the degrees of freedom $\nu$, are estimated by maximum likelihood \cite{bollerslev1986generalized,bollerslev1987conditionally}. VaR is $\mathrm{VaR}_t^{\mathrm{GARCH}}(\alpha) = -\hat{\sigma}_t \cdot F_{t_{\nu}}^{-1}(\alpha)$. A GARCH-Normal variant is also included for comparison.
 
 \paragraph{XGBoost volatility models.}
-Gradient boosting models predict conditional volatility $\sigma_{t+1}$ from lagged return and volatility features. VaR is derived as $\mathrm{VaR}_t = -\hat{\sigma}_{t} \cdot z$ where $z$ is either the standard Normal quantile $z_{\alpha}$ (XGBoost-Pure, XGBoost-Ensemble) or the Student-$t$ quantile with $\nu = 5$ (XGBoost-$t$). Two volatility-input variants are estimated: XGBoost-Pure (29 base features) and XGBoost-Ensemble (augmented with GARCH-$t$ forecasts). Fixed parameters (100 trees, depth 3, learning rate 0.05) are identical across tickers.
+Gradient boosting models predict conditional volatility $\sigma_{t+1}$ from lagged return and volatility features. VaR is derived as $\mathrm{VaR}_t = -\hat{\sigma}_{t} \cdot z$ where $z$ is either the standard Normal quantile $z_{\alpha}$ (XGBoost-Pure, XGBoost-Ensemble) or the Student-$t$ quantile with $\nu = 5$ (XGBoost-$t$). Two volatility-input variants are estimated: XGBoost-Pure (29 base features) and XGBoost-Ensemble (augmented with GARCH-$t$ forecasts). Fixed parameters (100 trees, depth 3, learning rate 0.05) are identical across tickers \cite{chen2016xgboost}.
 
 \subsection{Backtesting Framework}
 
@@ -181,7 +181,7 @@ For model $m$, the breach indicator at date $t$ is $I_t^{(m)}(\alpha) = \mathbf{
 
 \begin{enumerate}
     \item \textbf{Exact binomial test.} Under the null $H_0: p = \alpha$, the two-sided $p$-value is computed from the binomial distribution $\mathrm{Binomial}(n, \alpha)$ by summing the probability of all outcomes at least as extreme as the observed count $x = \sum I_t$. This test does not rely on asymptotic approximations.
-    \item \textbf{Clopper--Pearson confidence interval.} An exact 95\% confidence interval for the true breach rate, derived from the relationship between the binomial and beta distributions: $\mathrm{CI} = [F^{-1}_{\beta}(\delta/2;\, x,\, n-x+1),\; F^{-1}_{\beta}(1-\delta/2;\, x+1,\, n-x)]$ where $\delta = 0.05$ and $F^{-1}_{\beta}$ denotes the beta quantile function.
+    \item \textbf{Clopper--Pearson confidence interval.} An exact 95\% confidence interval for the true breach rate, derived from the relationship between the binomial and beta distributions \cite{clopper1934use}: $\mathrm{CI} = [F^{-1}_{\beta}(\delta/2;\, x,\, n-x+1),\; F^{-1}_{\beta}(1-\delta/2;\, x+1,\, n-x)]$ where $\delta = 0.05$ and $F^{-1}_{\beta}$ denotes the beta quantile function.
     \item \textbf{Conservatism metric} $C = \hat{p} - \alpha$. A negative value indicates a conservative model (fewer breaches than expected); a positive value indicates an anti-conservative model (more breaches than expected).
     \item \textbf{Kupiec POF test \cite{kupiec1995techniques}.} Included for comparability with the existing literature, but its asymptotic $\chi^2_1$ null distribution is unreliable at $n < 100$. We report it as secondary context, not primary evidence.
 \end{enumerate}
@@ -280,7 +280,7 @@ GARCH-$t$ is the model whose breach rate (4.8\%) is closest to the nominal 5\% l
 
 The exact binomial $p$-value is 0.035 for GARCH-Normal, XGBoost-Pure, and XGBoost-Ensemble, and 0.131 for XGBoost-$t$. However, given the power analysis in Section~4, these rejections should be interpreted cautiously: at $n = 62$, the exact binomial test rejects a correctly specified model 3.5\% of the time, and the Kupiec test rejects it 7.6\% of the time. The evidence against these models is directionally meaningful but not statistically definitive in isolation.
 
-The Christoffersen independence test yields $p \ge 0.10$ for all models at this sample size, providing no useful discrimination.
+The Christoffersen independence test yields $p \ge 0.100$ for all models at this sample size (GARCH-$t$: 0.100; others: 0.217--0.806), providing no useful discrimination.
 
 \begin{figure}[H]
 \centering
@@ -336,7 +336,7 @@ Figure~\ref{fig:conservatism} visualises the conservatism metric across all six 
 
 \subsection{Volatility Forecast Accuracy}
 
-A Diebold--Mariano test of equal forecast accuracy for squared volatility (Newey--West standard errors) is applied to the aligned forecasts. Neither comparison rejects at the 5\% level, though both approach marginal significance: GARCH-$t$ vs.\ XGBoost-Pure ($\mathrm{DM}=1.72$, $p=0.09$); GARCH-$t$ vs.\ XGBoost-Ensemble ($\mathrm{DM}=1.76$, $p=0.08$). The divergence between volatility forecast precision and VaR calibration highlights the distributional assumption: XGBoost VaR uses a Normal quantile while GARCH-$t$ uses estimated Student-$t$ quantiles with heavier tails. Similar MSE performance does not imply similar tail calibration.
+A Diebold--Mariano test \cite{diebold1995comparing} of equal forecast accuracy for squared volatility, with Newey--West \cite{newey1987simple} standard errors, is applied to the aligned forecasts. Neither comparison rejects at the 5\% level, though both approach marginal significance: GARCH-$t$ vs.\ XGBoost-Pure ($\mathrm{DM}=1.72$, $p=0.09$); GARCH-$t$ vs.\ XGBoost-Ensemble ($\mathrm{DM}=1.76$, $p=0.08$). The divergence between volatility forecast precision and VaR calibration highlights the distributional assumption: XGBoost VaR uses a Normal quantile while GARCH-$t$ uses estimated Student-$t$ quantiles with heavier tails. Similar MSE performance does not imply similar tail calibration.
 
 
 
@@ -399,7 +399,7 @@ The XGBoost-$t$ variant uses a fixed $\nu = 5$ rather than estimating the degree
 
 \subsection{Relation to Basel Traffic-Light Approaches}
 
-Basel traffic-light frameworks assume sufficient observations to distinguish random variation from model misspecification. When effective sample sizes fall below 100 observations, traffic-light classifications become highly sensitive to single breaches and should therefore be interpreted cautiously.
+Basel traffic-light frameworks \cite{bcbs2019minimum} assume sufficient observations to distinguish random variation from model misspecification. When effective sample sizes fall below 100 observations, traffic-light classifications become highly sensitive to single breaches and should therefore be interpreted cautiously.
 
 \subsection{Practical Implications for Model Governance}
 
@@ -410,7 +410,7 @@ The findings have direct implications for model risk management frameworks such 
 
 Standard VaR backtests become unreliable when the evaluation window falls below 100 observations, a condition that arises naturally under ex-ante volatility regime definitions. At $n = 62$, the Kupiec test has a Type~I error of 7.6\% (nominal 5\%) and power below 50\% against a model breaching at twice the nominal rate. The Christoffersen test is uninformative at these sample sizes. We propose augmenting traditional backtesting with exact binomial inference, Clopper--Pearson intervals, and directional conservatism metrics when sample sizes fall below 100 observations.
 
-Applied to Mexican FIBRAs, this framework shows GARCH-$t$ producing breach rates at or below the nominal 5\% level across all five tickers (pooled 3.6\%), while XGBoost-based models consistently over-breach (pooled 9.7\%, $p < 0.0001$). When $n < 100$, the question shifts from ``which model fits best?'' to ``which model is least likely to produce dangerously anti-conservative VaR forecasts.'' Parsimony is not a preference in such settings---it is imposed by the data. Future work could extend this analysis to Expected Shortfall, individual securities, and alternative regime configurations.
+Applied to Mexican FIBRAs, this framework shows GARCH-$t$ producing breach rates at or below the nominal 5\% level across all five tickers (pooled 3.6\%), while XGBoost-based models consistently over-breach (pooled 9.7\%; directional consistency across all five tickers, $p < 0.0001$ under independence). When $n < 100$, the question shifts from ``which model fits best?'' to ``which model is least likely to produce dangerously anti-conservative VaR forecasts.'' Parsimony is not a preference in such settings---it is imposed by the data. Future work could extend this analysis to Expected Shortfall, individual securities, and alternative regime configurations.
 
 % ============================================================
 \section*{Declarations of Interest}
