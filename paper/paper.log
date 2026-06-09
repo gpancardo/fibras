@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.8.3)  9 JUN 2026 01:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.8.3)  9 JUN 2026 01:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -549,15 +549,16 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 58.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 58.
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 6
-7.
-
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
-File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-) [1
+ [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-di
-st/fonts/enc/dvips/base/8r.enc}] [2]
+st/fonts/enc/dvips/base/8r.enc}]
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 6
+7.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+)
+[2]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 75.
 
@@ -572,14 +573,14 @@ I-BRATC14.MX
  []
 
 [5] [6] [7]
-<../output/figures/power_curve_small_sample.pdf, id=210, 640.75383pt x 387.5623
+<../output/figures/power_curve_small_sample.pdf, id=215, 640.75383pt x 387.5623
 pt>
 File: ../output/figures/power_curve_small_sample.pdf Graphic file (type pdf)
 <use ../output/figures/power_curve_small_sample.pdf>
 Package pdftex.def Info: ../output/figures/power_curve_small_sample.pdf  used o
 n input line 239.
 (pdftex.def)             Requested size: 432.48051pt x 261.58736pt.
-<../output/figures/size_distortion.pdf, id=211, 785.20255pt x 658.66016pt>
+<../output/figures/size_distortion.pdf, id=216, 785.20255pt x 658.66016pt>
 File: ../output/figures/size_distortion.pdf Graphic file (type pdf)
 <use ../output/figures/size_distortion.pdf>
 Package pdftex.def Info: ../output/figures/size_distortion.pdf  used on input l
@@ -595,20 +596,20 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 257.
 
 [9 <../output/figures/size_distortion.pdf>]
-<../output/figures/pvalue_staircase.pdf, id=337, 640.54118pt x 350.58919pt>
+<../output/figures/pvalue_staircase.pdf, id=342, 640.54118pt x 350.58919pt>
 File: ../output/figures/pvalue_staircase.pdf Graphic file (type pdf)
 <use ../output/figures/pvalue_staircase.pdf>
 Package pdftex.def Info: ../output/figures/pvalue_staircase.pdf  used on input 
 line 287.
 (pdftex.def)             Requested size: 432.48051pt x 236.71237pt.
  [10] [11 <../output/figures/pvalue_staircase.pdf>]
-<../output/figures/conservatism_bars.pdf, id=442, 551.60663pt x 279.35556pt>
+<../output/figures/conservatism_bars.pdf, id=448, 551.60663pt x 279.35556pt>
 File: ../output/figures/conservatism_bars.pdf Graphic file (type pdf)
 <use ../output/figures/conservatism_bars.pdf>
 Package pdftex.def Info: ../output/figures/conservatism_bars.pdf  used on input
  line 325.
 (pdftex.def)             Requested size: 386.96027pt x 195.9738pt.
-<../output/figures/rolling_breach_rates.pdf, id=443, 710.98503pt x 279.5582pt>
+<../output/figures/rolling_breach_rates.pdf, id=449, 710.98503pt x 279.5582pt>
 File: ../output/figures/rolling_breach_rates.pdf Graphic file (type pdf)
 <use ../output/figures/rolling_breach_rates.pdf>
 Package pdftex.def Info: ../output/figures/rolling_breach_rates.pdf  used on in
@@ -628,14 +629,20 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 350.
 [13 <../output/figures/rolling_breach_rates.pdf>] [14]
-<../output/figures/decision_framework.pdf, id=580, 570.93298pt x 717.02786pt>
+<../output/figures/decision_framework.pdf, id=591, 570.93298pt x 717.02786pt>
 File: ../output/figures/decision_framework.pdf Graphic file (type pdf)
 <use ../output/figures/decision_framework.pdf>
 Package pdftex.def Info: ../output/figures/decision_framework.pdf  used on inpu
-t line 389.
+t line 391.
 (pdftex.def)             Requested size: 386.96027pt x 485.997pt.
- [15] [16 <../output/figures/decision_framework.pdf>] [17] (./paper.bbl [18]) [
-19] (./paper.aux)
+ [15] [16 <../output/figures/decision_framework.pdf>] [17] (./paper.bbl
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 6
+.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+) [18]) [19]
+(./paper.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -644,29 +651,30 @@ Package rerunfilecheck Info: File `paper.out' has not changed.
 (rerunfilecheck)             Checksum: 34376FE7E733188BDFD332DD9679CCB1;4337.
  ) 
 Here is how much of TeX's memory you used:
- 13079 strings out of 476139
- 202888 string characters out of 5794455
+ 13125 strings out of 476139
+ 204078 string characters out of 5794455
  1936975 words of memory out of 5000000
- 34775 multiletter control sequences out of 15000+600000
- 641873 words of font info for 170 fonts, out of 8000000 for 9000
+ 34811 multiletter control sequences out of 15000+600000
+ 642186 words of font info for 171 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 75i,13n,79p,1094b,561s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,13n,79p,1261b,555s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist
 , replaced by a fixed one
 
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/
-share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/
-texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf
--dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb
-8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (19 pages, 259887 bytes).
+ </home/german/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.600p
+k></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/ut
+mb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on paper.pdf (19 pages, 271246 bytes).
 PDF statistics:
- 763 PDF objects out of 1000 (max. 8388607)
- 379 compressed objects within 4 object streams
- 98 named destinations out of 1000 (max. 500000)
+ 808 PDF objects out of 1000 (max. 8388607)
+ 402 compressed objects within 5 object streams
+ 104 named destinations out of 1000 (max. 500000)
  231 words of extra memory for PDF output out of 10000 (max. 10000000)
 

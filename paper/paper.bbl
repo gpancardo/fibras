@@ -1,5 +1,17 @@
 \begin{thebibliography}{}
 
+\bibitem[{Basel Committee on Banking Supervision}, 2019]{bcbs2019minimum}
+{Basel Committee on Banking Supervision} (2019).
+\newblock Minimum capital requirements for market risk.
+\newblock \url{https://www.bis.org/bcbs/publ/d457.pdf}.
+
+\bibitem[{Board of Governors of the Federal Reserve System},
+  2011]{frb2011sr117}
+{Board of Governors of the Federal Reserve System} (2011).
+\newblock Supervision and regulation letter {SR} 11-7: Guidance on model risk
+  management.
+\newblock Technical report, Federal Reserve.
+
 \bibitem[Bollerslev, 1986]{bollerslev1986generalized}
 Bollerslev, T. (1986).
 \newblock Generalized autoregressive conditional heteroskedasticity.
@@ -16,16 +28,33 @@ Campbell, S.~D. (2007).
 \newblock A review of backtesting and backtesting procedures.
 \newblock {\em The Journal of Risk}, 9(2):1--17.
 
+\bibitem[Chen and Guestrin, 2016]{chen2016xgboost}
+Chen, T. and Guestrin, C. (2016).
+\newblock {XGBoost}: A scalable tree boosting system.
+\newblock In {\em Proceedings of the 22nd ACM SIGKDD International Conference
+  on Knowledge Discovery and Data Mining}, pages 785--794.
+
 \bibitem[Christoffersen, 1998]{christoffersen1998evaluating}
 Christoffersen, P.~F. (1998).
 \newblock Evaluating interval forecasts.
 \newblock {\em International Economic Review}, 39(4):841--862.
+
+\bibitem[Clopper and Pearson, 1934]{clopper1934use}
+Clopper, C.~J. and Pearson, E.~S. (1934).
+\newblock The use of confidence or fiducial limits illustrated in the case of
+  the binomial.
+\newblock {\em Biometrika}, 26(4):404--413.
 
 \bibitem[Cotter and Stevenson, 2006]{cotter2006multivariate}
 Cotter, J. and Stevenson, S. (2006).
 \newblock Multivariate modeling of daily {REIT} volatility.
 \newblock {\em The Journal of Real Estate Finance and Economics},
   32(3):305--325.
+
+\bibitem[Diebold and Mariano, 1995]{diebold1995comparing}
+Diebold, F.~X. and Mariano, R.~S. (1995).
+\newblock Comparing predictive accuracy.
+\newblock {\em Journal of Business \& Economic Statistics}, 13(3):253--263.
 
 \bibitem[Escanciano and Olmo, 2010]{escanciano2010backtesting}
 Escanciano, J.~C. and Olmo, J. (2010).
@@ -47,6 +76,12 @@ Kratz, M., Lok, Y.~H., and McNeil, A.~J. (2018).
 Kupiec, P.~H. (1995).
 \newblock Techniques for verifying the accuracy of risk measurement models.
 \newblock {\em The Journal of Derivatives}, 3(2):73--84.
+
+\bibitem[Newey and West, 1987]{newey1987simple}
+Newey, W.~K. and West, K.~D. (1987).
+\newblock A simple, positive semi-definite, heteroskedasticity and
+  autocorrelation consistent covariance matrix.
+\newblock {\em Econometrica}, 55(3):703--708.
 
 \bibitem[Zhou and Anderson, 2012]{zhou2012extreme}
 Zhou, J. and Anderson, R.~I. (2012).

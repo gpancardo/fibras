@@ -4,7 +4,7 @@
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \citation{kupiec1995techniques}
 \citation{christoffersen1998evaluating}
-\citation{escanciano2010backtesting,kratz2018multinomial}
+\citation{escanciano2010backtesting}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{3}{section.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Contributions}{3}{subsection.1.1}\protected@file@percent }
 \citation{kupiec1995techniques}
@@ -27,6 +27,8 @@
 \newlabel{eq:theta}{{2}{5}{Ex-Ante Regime Definition}{equation.4.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Models}{5}{subsection.4.2}\protected@file@percent }
 \citation{bollerslev1986generalized,bollerslev1987conditionally}
+\citation{chen2016xgboost}
+\citation{clopper1934use}
 \citation{kupiec1995techniques}
 \@writefile{toc}{\contentsline {paragraph}{Historical VaR.}{6}{section*.3}\protected@file@percent }
 \newlabel{eq:hist}{{3}{6}{Historical VaR}{equation.4.3}{}}
@@ -39,8 +41,8 @@
 \@writefile{toc}{\contentsline {section}{\numberline {5}Power Analysis and Size Distortion}{7}{section.5}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Exact operating characteristics of the Kupiec POF test and the exact binomial test at $\alpha = 0.05$. ``Size'' is the rejection rate when $p_{\text  {true}} = \alpha $; ``Power'' is the rejection rate at the indicated true breach rate.}}{7}{table.caption.6}\protected@file@percent }
 \newlabel{tab:power}{{2}{7}{Exact operating characteristics of the Kupiec POF test and the exact binomial test at $\alpha = 0.05$. ``Size'' is the rejection rate when $p_{\text {true}} = \alpha $; ``Power'' is the rejection rate at the indicated true breach rate}{table.caption.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Power curves of the Kupiec POF test for $n = 62$, $n = 95$, and $n = 250$, computed exactly from the binomial distribution.}}{8}{figure.caption.7}\protected@file@percent }
-\newlabel{fig:power}{{1}{8}{Power curves of the Kupiec POF test for $n = 62$, $n = 95$, and $n = 250$, computed exactly from the binomial distribution}{figure.caption.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Power curves of the Kupiec POF test for $n = 62$, $n = 95$, and $n = 250$, computed exactly from the binomial distribution. These assume independent breaches; under breach clustering, effective sample sizes are smaller and power is lower.}}{8}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:power}{{1}{8}{Power curves of the Kupiec POF test for $n = 62$, $n = 95$, and $n = 250$, computed exactly from the binomial distribution. These assume independent breaches; under breach clustering, effective sample sizes are smaller and power is lower}{figure.caption.7}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Distribution of Kupiec $p$-values under the null hypothesis ($H_0: p = 0.05$) for $n = 62$ and $n = 95$, based on 5,000 binomial draws. Deviation from the uniform distribution (dashed line) indicates size distortion. The empirical rejection rate (fraction below 0.05) is shown in each panel.}}{9}{figure.caption.8}\protected@file@percent }
 \newlabel{fig:size}{{2}{9}{Distribution of Kupiec $p$-values under the null hypothesis ($H_0: p = 0.05$) for $n = 62$ and $n = 95$, based on 5,000 binomial draws. Deviation from the uniform distribution (dashed line) indicates size distortion. The empirical rejection rate (fraction below 0.05) is shown in each panel}{figure.caption.8}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}Empirical Results}{9}{section.6}\protected@file@percent }
@@ -54,6 +56,8 @@
 \newlabel{tab:multi}{{4}{12}{Multi-asset comparison, 95\% VaR. $C = \hat {p} - \alpha $. All models use identical specifications across tickers}{table.caption.11}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Conservatism metric $C = \hat  {p} - \alpha $ for each model on FIBRATC14.MX ($n = 62$, 95\% VaR). Negative values (blue/green) indicate conservative models; positive values (red) indicate anti-conservative models. GARCH-$t$ is the only model with $C \approx 0$.}}{12}{figure.caption.12}\protected@file@percent }
 \newlabel{fig:conservatism}{{4}{12}{Conservatism metric $C = \hat {p} - \alpha $ for each model on FIBRATC14.MX ($n = 62$, 95\% VaR). Negative values (blue/green) indicate conservative models; positive values (red) indicate anti-conservative models. GARCH-$t$ is the only model with $C \approx 0$}{figure.caption.12}{}}
+\citation{diebold1995comparing}
+\citation{newey1987simple}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Rolling 30-day breach rates for all six models on FIBRATC14.MX. The horizontal dashed line marks the nominal 5\% rate.}}{13}{figure.caption.13}\protected@file@percent }
 \newlabel{fig:rolling}{{5}{13}{Rolling 30-day breach rates for all six models on FIBRATC14.MX. The horizontal dashed line marks the nominal 5\% rate}{figure.caption.13}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Volatility Forecast Accuracy}{13}{subsection.6.3}\protected@file@percent }
@@ -65,19 +69,27 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Decision framework for small-sample VaR validation.}}{16}{figure.caption.14}\protected@file@percent }
 \newlabel{fig:framework}{{6}{16}{Decision framework for small-sample VaR validation}{figure.caption.14}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Limitations}{16}{subsection.7.5}\protected@file@percent }
+\citation{bcbs2019minimum}
+\citation{frb2011sr117}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.6}Relation to Basel Traffic-Light Approaches}{17}{subsection.7.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.7}Practical Implications for Model Governance}{17}{subsection.7.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{17}{section.8}\protected@file@percent }
 \bibstyle{apalike}
 \bibdata{references}
-\bibcite{bollerslev1986generalized}{{1}{1986}{{Bollerslev}}{{}}}
-\bibcite{bollerslev1987conditionally}{{2}{1987}{{Bollerslev}}{{}}}
-\bibcite{campbell2007review}{{3}{2007}{{Campbell}}{{}}}
-\bibcite{christoffersen1998evaluating}{{4}{1998}{{Christoffersen}}{{}}}
-\bibcite{cotter2006multivariate}{{5}{2006}{{Cotter and Stevenson}}{{}}}
-\bibcite{escanciano2010backtesting}{{6}{2010}{{Escanciano and Olmo}}{{}}}
-\bibcite{gu2020empirical}{{7}{2020}{{Gu et~al.}}{{}}}
-\bibcite{kratz2018multinomial}{{8}{2018}{{Kratz et~al.}}{{}}}
-\bibcite{kupiec1995techniques}{{9}{1995}{{Kupiec}}{{}}}
-\bibcite{zhou2012extreme}{{10}{2012}{{Zhou and Anderson}}{{}}}
+\bibcite{bcbs2019minimum}{{1}{2019}{{Basel Committee on Banking Supervision}}{{}}}
+\bibcite{frb2011sr117}{{2}{2011}{{Board of Governors of the Federal Reserve System}}{{}}}
+\bibcite{bollerslev1986generalized}{{3}{1986}{{Bollerslev}}{{}}}
+\bibcite{bollerslev1987conditionally}{{4}{1987}{{Bollerslev}}{{}}}
+\bibcite{campbell2007review}{{5}{2007}{{Campbell}}{{}}}
+\bibcite{chen2016xgboost}{{6}{2016}{{Chen and Guestrin}}{{}}}
+\bibcite{christoffersen1998evaluating}{{7}{1998}{{Christoffersen}}{{}}}
+\bibcite{clopper1934use}{{8}{1934}{{Clopper and Pearson}}{{}}}
+\bibcite{cotter2006multivariate}{{9}{2006}{{Cotter and Stevenson}}{{}}}
+\bibcite{diebold1995comparing}{{10}{1995}{{Diebold and Mariano}}{{}}}
+\bibcite{escanciano2010backtesting}{{11}{2010}{{Escanciano and Olmo}}{{}}}
+\bibcite{gu2020empirical}{{12}{2020}{{Gu et~al.}}{{}}}
+\bibcite{kratz2018multinomial}{{13}{2018}{{Kratz et~al.}}{{}}}
+\bibcite{kupiec1995techniques}{{14}{1995}{{Kupiec}}{{}}}
+\bibcite{newey1987simple}{{15}{1987}{{Newey and West}}{{}}}
+\bibcite{zhou2012extreme}{{16}{2012}{{Zhou and Anderson}}{{}}}
 \gdef \@abspage@last{19}
